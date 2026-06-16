@@ -157,77 +157,41 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);height:56px;
       </div>
 
       <div class="stats">
-        <div class="stat"><div class="stat-lbl">Agents Active</div><div class="stat-val">0</div><div class="stat-sub warn">Deploy agents →</div></div>
-        <div class="stat"><div class="stat-lbl">Tasks Today</div><div class="stat-val">0</div><div class="stat-sub">Kanban loading</div></div>
-        <div class="stat"><div class="stat-lbl">Memory Entries</div><div class="stat-val">—</div><div class="stat-sub warn">Connect Hermes →</div></div>
-        <div class="stat"><div class="stat-lbl">Skills Loaded</div><div class="stat-val">—</div><div class="stat-sub">Awaiting sync</div></div>
+        <div class="stat"><div class="stat-lbl">Agents Active</div><div class="stat-val" id="st-agents">—</div><div class="stat-sub" id="st-agents-sub">Loading...</div></div>
+        <div class="stat"><div class="stat-lbl">Tasks Today</div><div class="stat-val" id="st-tasks">—</div><div class="stat-sub" id="st-tasks-sub">Loading...</div></div>
+        <div class="stat"><div class="stat-lbl">Success Rate</div><div class="stat-val" id="st-rate">—</div><div class="stat-sub" id="st-rate-sub">Loading...</div></div>
+        <div class="stat"><div class="stat-lbl">Total Workflows</div><div class="stat-val" id="st-total">—</div><div class="stat-sub">n8n automation stack</div></div>
       </div>
 
       <div class="section-hd" style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
-        <div style="font-family:'Sora',sans-serif;font-weight:700;font-size:15px">Agent Status</div>
-        <button style="padding:8px 14px;background:var(--accent);color:#fff;border:none;border-radius:7px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Sora',sans-serif">+ Deploy Agent</button>
+        <div style="font-family:'Sora',sans-serif;font-weight:700;font-size:15px">Live Agent Status</div>
+        <button onclick="triggerWorkflow()" style="padding:8px 14px;background:var(--accent);color:#fff;border:none;border-radius:7px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Sora',sans-serif" id="trigger-btn">⚡ Trigger Automation</button>
       </div>
-      <div class="agents" style="margin-bottom:22px">
-        <div class="agent-card">
-          <div class="agent-hd"><div class="agent-name"><span class="agent-ico">🌙</span>Night Shift</div><span class="agent-status as-idle">IDLE</span></div>
-          <div class="agent-row"><span class="agent-k">last_run</span><span class="agent-v">—</span></div>
-          <div class="agent-row"><span class="agent-k">tasks_completed</span><span class="agent-v">—</span></div>
-          <div class="agent-row"><span class="agent-k">next_scheduled</span><span class="agent-v">Not configured</span></div>
-        </div>
-        <div class="agent-card">
-          <div class="agent-hd"><div class="agent-name"><span class="agent-ico">🧠</span>Hermes Agent</div><span class="agent-status as-idle">IDLE</span></div>
-          <div class="agent-row"><span class="agent-k">model</span><span class="agent-v">claude-sonnet-4-6</span></div>
-          <div class="agent-row"><span class="agent-k">sessions</span><span class="agent-v">—</span></div>
-          <div class="agent-row"><span class="agent-k">skills_loaded</span><span class="agent-v">—</span></div>
-        </div>
-        <div class="agent-card">
-          <div class="agent-hd"><div class="agent-name"><span class="agent-ico">📡</span>Gateway Service</div><span class="agent-status as-idle">IDLE</span></div>
-          <div class="agent-row"><span class="agent-k">port</span><span class="agent-v">Not started</span></div>
-          <div class="agent-row"><span class="agent-k">requests_today</span><span class="agent-v">—</span></div>
-          <div class="agent-row"><span class="agent-k">uptime</span><span class="agent-v">—</span></div>
-        </div>
-        <div class="agent-card" style="border-style:dashed;display:flex;align-items:center;justify-content:center;min-height:140px">
-          <div style="text-align:center;color:var(--mut)">
-            <div style="font-size:28px;margin-bottom:8px">+</div>
-            <div style="font-size:12px;font-family:var(--mono)">DEPLOY NEW AGENT</div>
-          </div>
-        </div>
+      <div class="agents" id="agent-grid" style="margin-bottom:22px">
+        <div class="agent-card" style="grid-column:1/-1;text-align:center;color:var(--mut);padding:40px;font-family:var(--mono);font-size:12px">CONNECTING TO AUTOMATION STACK...</div>
       </div>
 
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
         <div style="font-family:'Sora',sans-serif;font-weight:700;font-size:15px">Activity Log</div>
-        <span style="font-family:var(--mono);font-size:11px;color:var(--mut)">LIVE</span>
+        <span style="font-family:var(--mono);font-size:11px;color:var(--grn)" id="log-status">● LIVE</span>
       </div>
-      <div class="log-list" style="margin-bottom:22px">
-        <div class="log-item">
-          <span class="log-type lt-ok">BOOT</span>
-          <div class="log-body">
-            <div class="log-msg">HermesOS control panel initialized. System online.</div>
-            <div class="log-ts">TODAY · hermes.joelycannoli.com</div>
-          </div>
-        </div>
-        <div class="log-item">
-          <span class="log-type lt-warn">ACTION</span>
-          <div class="log-body">
-            <div class="log-msg">Waiting for Hermes API connection. Connect H:\AI\Hermes to enable live data.</div>
-            <div class="log-ts">PENDING · gateway-service not started</div>
-          </div>
-        </div>
+      <div class="log-list" id="log-list" style="margin-bottom:22px">
+        <div class="log-item"><span class="log-type lt-info">INIT</span><div class="log-body"><div class="log-msg">Connecting to n8n automation stack...</div><div class="log-ts">NOW</div></div></div>
       </div>
 
-      <div style="font-family:'Sora',sans-serif;font-weight:700;font-size:15px;margin-bottom:12px">Task Kanban</div>
+      <div style="font-family:'Sora',sans-serif;font-weight:700;font-size:15px;margin-bottom:12px">Active Workflows</div>
       <div class="kanban">
         <div class="kan-col">
-          <div class="kan-hd">BACKLOG <span class="kan-count">0</span></div>
-          <div class="kan-card">Connect Hermes to populate tasks</div>
+          <div class="kan-hd">RUNNING <span class="kan-count" id="kan-running">—</span></div>
+          <div id="kan-running-list"><div class="kan-card">Loading...</div></div>
         </div>
         <div class="kan-col">
-          <div class="kan-hd">IN PROGRESS <span class="kan-count">0</span></div>
-          <div class="kan-card">Awaiting agent data</div>
+          <div class="kan-hd">RECENT <span class="kan-count" id="kan-recent">—</span></div>
+          <div id="kan-recent-list"><div class="kan-card">Loading...</div></div>
         </div>
         <div class="kan-col">
-          <div class="kan-hd">DONE <span class="kan-count">0</span></div>
-          <div class="kan-card">Ship Goal #1 — infrastructure live ✓</div>
+          <div class="kan-hd">DONE TODAY <span class="kan-count" id="kan-done">—</span></div>
+          <div id="kan-done-list"><div class="kan-card">Loading...</div></div>
         </div>
       </div>
     </main>
@@ -236,11 +200,80 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);height:56px;
 
 <script>
 const K='hermes_auth';const P='Anchor98';
+const API='https://n8n.joelycannoli.com/webhook/anchor-dashboard';
+const TRIGGER='https://n8n.joelycannoli.com/webhook/anchor-trigger';
+
 function login(){const v=document.getElementById('pw').value;if(v===P){sessionStorage.setItem(K,'1');show()}else{const e=document.getElementById('err');e.textContent='ACCESS DENIED';document.getElementById('pw').value='';document.getElementById('pw').focus();setTimeout(()=>e.textContent='',3e3)}}
-function show(){document.getElementById('auth').classList.add('out');document.getElementById('app').classList.add('on');setTimeout(()=>document.getElementById('auth').style.display='none',450)}
+function show(){document.getElementById('auth').classList.add('out');document.getElementById('app').classList.add('on');setTimeout(()=>{document.getElementById('auth').style.display='none';fetchData()},450)}
 document.getElementById('pw').addEventListener('keydown',e=>{if(e.key==='Enter')login()});
-if(sessionStorage.getItem(K)){document.getElementById('auth').style.display='none';document.getElementById('app').classList.add('on')}else{document.getElementById('pw').focus()}
+if(sessionStorage.getItem(K)){document.getElementById('auth').style.display='none';document.getElementById('app').classList.add('on');fetchData()}
+else{document.getElementById('pw').focus()}
 document.querySelectorAll('.nav-tab,.sb-item').forEach(el=>el.addEventListener('click',function(){this.closest('nav,.sidebar')?.querySelectorAll('.nav-tab,.sb-item').forEach(i=>i.classList.remove('on'));this.classList.add('on')}));
+
+function fmt(ts){const d=new Date(ts),now=new Date();const diff=Math.round((now-d)/1e3);if(diff<60)return diff+'s ago';if(diff<3600)return Math.floor(diff/60)+'m ago';return Math.floor(diff/3600)+'h ago'}
+
+async function fetchData(){
+  try{
+    const r=await fetch(API);
+    const d=await r.json();
+    const a=d.agents,act=d.activity,wfs=d.workflows||[];
+
+    document.getElementById('st-agents').textContent=a.active;
+    document.getElementById('st-agents-sub').textContent=a.active+' of '+a.total+' active';
+    document.getElementById('st-tasks').textContent=act.today;
+    document.getElementById('st-tasks-sub').textContent='executions today';
+    document.getElementById('st-rate').textContent=act.successRate+'%';
+    const rateEl=document.getElementById('st-rate-sub');
+    rateEl.textContent=act.successRate>=90?'Excellent':'Watch errors';
+    rateEl.className='stat-sub '+(act.successRate>=90?'':'warn');
+    document.getElementById('st-total').textContent=a.total;
+    document.getElementById('log-status').textContent='● SYNCED '+fmt(d.generated);
+
+    // Agent grid
+    const grid=document.getElementById('agent-grid');
+    grid.innerHTML=wfs.slice(0,4).map(w=>`
+      <div class="agent-card">
+        <div class="agent-hd"><div class="agent-name"><span class="agent-ico">🤖</span>${w.name.replace(/^[✅⚡🤖⚓⚠️🌙🔄▶️]+\s*/u,'')}</div><span class="agent-status as-running">ACTIVE</span></div>
+        <div class="agent-row"><span class="agent-k">status</span><span class="agent-v" style="color:var(--grn)">running</span></div>
+        <div class="agent-row"><span class="agent-k">workflow_id</span><span class="agent-v" style="font-family:var(--mono);font-size:11px">${w.id.slice(0,12)}...</span></div>
+      </div>`).join('') + `
+      <div class="agent-card" style="border-style:dashed;display:flex;align-items:center;justify-content:center;min-height:120px;cursor:pointer" onclick="triggerWorkflow()">
+        <div style="text-align:center;color:var(--mut)"><div style="font-size:24px;margin-bottom:6px">⚡</div><div style="font-size:11px;font-family:var(--mono)">TRIGGER AUTOMATION</div></div>
+      </div>`;
+
+    // Activity log
+    const log=document.getElementById('log-list');
+    log.innerHTML=act.recent.map(e=>`
+      <div class="log-item">
+        <span class="log-type ${e.status==='success'?'lt-ok':'lt-err'}">${e.status.toUpperCase()}</span>
+        <div class="log-body"><div class="log-msg">Automation run #${e.id} completed</div><div class="log-ts">${fmt(e.time)} · n8n.joelycannoli.com</div></div>
+      </div>`).join('');
+
+    // Kanban
+    document.getElementById('kan-running').textContent=a.active;
+    document.getElementById('kan-recent').textContent=act.recent.length;
+    document.getElementById('kan-done').textContent=act.today;
+    document.getElementById('kan-running-list').innerHTML=wfs.slice(0,3).map(w=>`<div class="kan-card" style="text-align:left;color:var(--txt);font-style:normal;font-size:11px">🟢 ${w.name.slice(0,32)}</div>`).join('');
+    document.getElementById('kan-recent-list').innerHTML=act.recent.slice(0,3).map(e=>`<div class="kan-card" style="text-align:left;color:var(--txt);font-style:normal;font-size:11px">${e.status==='success'?'✅':'❌'} Run #${e.id} · ${fmt(e.time)}</div>`).join('');
+    document.getElementById('kan-done-list').innerHTML=`<div class="kan-card" style="text-align:left;color:var(--txt);font-style:normal;font-size:11px">✅ Goal #1 complete — dashboards live</div><div class="kan-card" style="text-align:left;color:var(--txt);font-style:normal;font-size:11px">✅ n8n API wired — ${act.today} runs today</div>`;
+
+  }catch(err){
+    document.getElementById('log-status').textContent='● ERROR';
+    console.error('Dashboard fetch error',err);
+  }
+}
+
+async function triggerWorkflow(){
+  const btn=document.getElementById('trigger-btn');
+  btn.textContent='Triggering...';btn.disabled=true;
+  try{
+    await fetch(TRIGGER,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({source:'hermes-dashboard',ts:new Date().toISOString()})});
+    btn.textContent='✅ Triggered!';
+  }catch(e){btn.textContent='⚡ Trigger Automation';}
+  setTimeout(()=>{btn.textContent='⚡ Trigger Automation';btn.disabled=false},3000);
+}
+
+setInterval(fetchData,60000);
 </script>
 </body>
 </html>
