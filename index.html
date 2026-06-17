@@ -7,12 +7,14 @@
 <title>HermesOS · DORI Intelligence</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js" integrity="sha384-e6nUZLBkQ86NJ6TVVKAeSaK8jWa3NhkYWZFomE39AvDbQWeie9PlQqM3pmYW5d1g" crossorigin="anonymous"></script>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=DM+Mono:wght@400;500&display=swap&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"></noscript>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js" integrity="sha384-e6nUZLBkQ86NJ6TVVKAeSaK8jWa3NhkYWZFomE39AvDbQWeie9PlQqM3pmYW5d1g" crossorigin="anonymous" defer></script>
 <style>
-:root{--bg:#060610;--surface:#0d0d1a;--surf2:#121225;--border:#1a1a35;--accent:#6d28d9;--accent2:#7c3aed;--glow:rgba(109,40,217,.18);--teal:#0891b2;--grn:#059669;--amb:#d97706;--red:#dc2626;--txt:#e2e8f0;--mut:#475569;--mono:'DM Mono',monospace}
+:root{--bg:#060610;--surface:#0d0d1a;--surf2:#121225;--border:#1a1a35;--accent:#6d28d9;--accent2:#7c3aed;--glow:rgba(109,40,217,.18);--teal:#0891b2;--grn:#059669;--amb:#d97706;--red:#dc2626;--txt:#e2e8f0;--mut:#7a8fa8;--mono:'DM Mono',monospace}
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'DM Sans',-apple-system,sans-serif;background:var(--bg);color:var(--txt);font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased;min-height:100vh;height:100vh;overflow:hidden}
+body{font-family:-apple-system,'Segoe UI',sans-serif;background:var(--bg);color:var(--txt);font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased;min-height:100vh;height:100vh;overflow:hidden}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 #auth{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:9999;transition:opacity .4s}
 #auth.out{opacity:0;pointer-events:none}
 .auth-box{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:44px 40px;width:100%;max-width:360px;text-align:center;box-shadow:0 0 80px var(--glow)}
@@ -39,8 +41,8 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);height:52px;
 /* ─── SIDEBAR ────────────────────────────────────────────────── */
 .sidebar{width:218px;min-width:218px;background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow-y:auto;overflow-x:hidden}
 .sb-sec{padding:14px 14px 4px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--mut);font-family:var(--mono)}
-.sb-action{display:flex;align-items:center;gap:9px;padding:8px 14px;cursor:pointer;color:var(--mut);font-size:12px;border-left:2px solid transparent;transition:all .12s;user-select:none}
-.sb-action:hover{color:var(--txt);background:rgba(255,255,255,.03);border-left-color:var(--accent2)}
+.sb-action{display:flex;align-items:center;gap:9px;padding:12px 14px;cursor:pointer;color:var(--mut);font-size:12px;border-left:2px solid transparent;transition:all .12s;user-select:none;min-height:44px}
+.sb-action:hover,.sb-action:focus-visible{color:var(--txt);background:rgba(255,255,255,.03);border-left-color:var(--accent2);outline:none}
 .sb-action:active{background:var(--glow)}
 .sb-icon{font-size:13px;width:16px;text-align:center;flex-shrink:0}
 .sb-divider{height:1px;background:var(--border);margin:8px 14px}
@@ -48,7 +50,7 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);height:52px;
 /* ─── GAUGE SECTION ──────────────────────────────────────────── */
 .gauge-wrap{padding:6px 11px 10px}
 .gauge-main-block{display:flex;flex-direction:column;align-items:center;margin-bottom:6px}
-.gauge-canvas{display:block;width:100%;image-rendering:pixelated}
+.gauge-canvas{display:block;width:100%;image-rendering:auto}
 .gauge-zone-badge{font-family:'Sora',sans-serif;font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:1.2px;padding:2px 7px;border-radius:3px;margin-top:3px}
 .gauge-zone-badge.red{color:#ef4444;background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.25)}
 .gauge-zone-badge.amb{color:#f59e0b;background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.25)}
@@ -57,7 +59,7 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);height:52px;
 .gauge-sub-vals{font-family:var(--mono);font-size:10px;color:var(--mut);text-align:center;margin-top:2px}
 .gauge-mini-row{display:flex;gap:8px;justify-content:space-between;margin-top:6px}
 .gauge-mini-block{flex:1;display:flex;flex-direction:column;align-items:center;background:var(--surf2);border:1px solid var(--border);border-radius:8px;padding:6px 4px 5px}
-.gauge-mini-canvas{display:block;width:100%;image-rendering:pixelated}
+.gauge-mini-canvas{display:block;width:100%;image-rendering:auto}
 .gauge-mini-val{font-family:'Sora',sans-serif;font-size:13px;font-weight:700;text-align:center;margin-top:2px;line-height:1}
 .gauge-mini-lbl{font-family:var(--mono);font-size:9px;color:var(--mut);text-align:center;text-transform:uppercase;letter-spacing:.5px;margin-top:2px}
 
@@ -65,7 +67,7 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);height:52px;
 .agent-board-wrap{padding:0 11px 12px}
 .agent-row{display:flex;align-items:center;gap:5px;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.035)}
 .agent-row:last-child{border-bottom:none}
-.agent-rank{font-family:var(--mono);font-size:9px;color:var(--mut);width:9px;flex-shrink:0;text-align:center}
+.agent-rank{font-family:var(--mono);font-size:9px;color:var(--mut);width:16px;flex-shrink:0;text-align:center}
 .agent-name{font-size:11px;color:var(--txt);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:500}
 .agent-bar-bg{width:42px;height:4px;background:var(--border);border-radius:2px;overflow:hidden;flex-shrink:0}
 .agent-bar-fill{height:100%;border-radius:2px;transition:width .8s cubic-bezier(.25,.46,.45,.94)}
@@ -102,27 +104,36 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);height:52px;
 .chart-title{font-family:'Sora',sans-serif;font-size:12px;font-weight:700;color:var(--mut);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px}
 .chart-canvas{max-height:240px}
 .dori-input-row{border-top:1px solid var(--border);padding:10px 14px;display:flex;gap:8px;align-items:center;flex-shrink:0;background:var(--surface)}
-.input-btn{width:34px;height:34px;border-radius:8px;border:1.5px solid var(--border);background:transparent;color:var(--mut);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:15px;transition:all .12s;flex-shrink:0}
-.input-btn:hover{border-color:var(--accent2);color:var(--txt);background:var(--glow)}
+.input-btn{width:44px;height:44px;border-radius:8px;border:1.5px solid var(--border);background:transparent;color:var(--mut);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:15px;transition:all .12s;flex-shrink:0}
+.input-btn:hover,.input-btn:focus-visible{border-color:var(--accent2);color:var(--txt);background:var(--glow);outline:none}
 .input-btn.active{border-color:var(--red);color:var(--red);background:rgba(220,38,38,.1);animation:mic-pulse 1s infinite}
 @keyframes mic-pulse{0%,100%{box-shadow:0 0 0 0 rgba(220,38,38,.4)}50%{box-shadow:0 0 0 6px rgba(220,38,38,0)}}
-#dori-input{flex:1;background:var(--bg);border:1.5px solid var(--border);border-radius:8px;padding:10px 14px;color:var(--txt);font-size:13px;font-family:'DM Sans',sans-serif;outline:none;transition:border-color .15s;resize:none}
+#dori-input{flex:1;background:var(--bg);border:1.5px solid var(--border);border-radius:8px;padding:10px 14px;color:var(--txt);font-size:13px;font-family:-apple-system,'Segoe UI',sans-serif;outline:none;transition:border-color .15s;resize:none;min-height:44px;max-height:120px;overflow-y:auto;line-height:1.5}
 #dori-input:focus{border-color:var(--accent2);box-shadow:0 0 0 2px var(--glow)}
 #dori-input::placeholder{color:var(--mut)}
-.send-btn{padding:10px 18px;background:var(--accent);color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Sora',sans-serif;transition:background .15s;white-space:nowrap;flex-shrink:0}
-.send-btn:hover{background:var(--accent2)}
+.send-btn{padding:12px 18px;background:var(--accent);color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Sora',sans-serif;transition:background .15s;white-space:nowrap;flex-shrink:0;min-height:44px}
+.send-btn:hover,.send-btn:focus-visible{background:var(--accent2);outline:none}
 .send-btn:disabled{opacity:.5;cursor:not-allowed}
 .dori-alerts{margin-bottom:6px;display:flex;flex-direction:column;gap:4px;max-width:100%}
 .alert-item{padding:7px 12px;border-radius:7px;font-size:11px;font-family:var(--mono);line-height:1.5;border:1px solid rgba(217,119,6,.3);background:rgba(217,119,6,.07);color:#fbbf24}
 .alert-item.urgent{border-color:rgba(220,38,38,.3);background:rgba(220,38,38,.07);color:#f87171}
 .alert-item.success{border-color:rgba(5,150,105,.3);background:rgba(5,150,105,.07);color:#34d399}
 .suggestion-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
-.chip{padding:5px 12px;border-radius:20px;border:1px solid var(--border);background:var(--surf2);color:var(--mut);font-size:11px;font-family:var(--mono);cursor:pointer;transition:all .12s;letter-spacing:.2px;line-height:1.4}
-.chip:hover{border-color:var(--accent2);color:var(--txt);background:rgba(109,40,217,.12)}
+.chip{padding:10px 14px;border-radius:20px;border:1px solid var(--border);background:var(--surf2);color:var(--mut);font-size:11px;font-family:var(--mono);cursor:pointer;transition:all .12s;letter-spacing:.2px;line-height:1.4;min-height:44px;display:inline-flex;align-items:center}
+.chip:hover,.chip:focus-visible{border-color:var(--accent2);color:var(--txt);background:rgba(109,40,217,.12);outline:none}
 .file-preview{display:flex;align-items:center;gap:8px;padding:6px 10px;background:var(--surf2);border:1px solid var(--border);border-radius:6px;margin-bottom:6px;font-size:11px;font-family:var(--mono);color:var(--mut)}
 .file-preview .fp-name{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .file-preview .fp-rm{cursor:pointer;color:var(--red);font-size:14px}
-@media(max-width:768px){.sidebar{display:none}.msg{max-width:94%}}
+.hamburger{display:none;background:transparent;border:none;color:var(--mut);cursor:pointer;padding:6px 8px;font-size:18px;line-height:1;min-width:44px;min-height:44px;align-items:center;justify-content:center}
+.hamburger:focus-visible{outline:2px solid var(--accent2);border-radius:6px}
+.sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:199;backdrop-filter:blur(2px)}
+.sidebar-overlay.open{display:block}
+@media(max-width:768px){
+  .hamburger{display:flex}
+  .sidebar{position:fixed;left:0;top:52px;bottom:0;z-index:200;transform:translateX(-100%);transition:transform .22s ease;box-shadow:4px 0 24px rgba(0,0,0,.5)}
+  .sidebar.mobile-open{transform:translateX(0)}
+  .msg{max-width:94%}
+}
 </style>
 </head>
 <body>
@@ -131,42 +142,47 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);height:52px;
   <div class="auth-box">
     <div class="auth-logo">Hermes<span>OS</span></div>
     <div class="auth-ver">DORI · BUSINESS INTELLIGENCE</div>
-    <input type="password" class="auth-inp" id="pw" placeholder="ACCESS CODE" autocomplete="current-password">
+    <label for="pw" class="sr-only">Access code</label>
+    <input type="password" class="auth-inp" id="pw" placeholder="ACCESS CODE" autocomplete="current-password" aria-describedby="err">
     <button class="auth-btn" onclick="login()">INITIALIZE</button>
-    <div class="auth-err" id="err"></div>
+    <div class="auth-err" id="err" role="alert" aria-live="assertive"></div>
   </div>
 </div>
 
 <div id="app">
-  <nav>
-    <div class="nav-brand">Hermes<span>OS</span></div>
+  <nav aria-label="Main navigation">
+    <div style="display:flex;align-items:center;gap:10px">
+      <button class="hamburger" id="hamburger-btn" onclick="toggleSidebar()" aria-label="Open sidebar navigation" aria-expanded="false" aria-controls="main-sidebar">☰</button>
+      <div class="nav-brand">Hermes<span>OS</span></div>
+    </div>
     <div class="nav-r">
       <div class="safety-badge">READ-ONLY · NO OUTBOUND</div>
       <div class="status-pill"><span class="pulse"></span>DORI ONLINE</div>
     </div>
   </nav>
+  <div class="sidebar-overlay" id="sidebar-overlay" onclick="closeSidebar()" aria-hidden="true"></div>
 
   <div class="shell">
-    <aside class="sidebar">
+    <aside class="sidebar" id="main-sidebar" aria-label="Sidebar navigation">
       <div class="sb-sec">Quick Intel</div>
-      <div class="sb-action" onclick="quickAsk('Give me a full business snapshot')"><span class="sb-icon">📊</span>Business Snapshot</div>
-      <div class="sb-action" onclick="quickAsk('Which deals are stale and need follow-up?')"><span class="sb-icon">⚠️</span>Stale Deals</div>
-      <div class="sb-action" onclick="quickAsk('What deals are closing soon?')"><span class="sb-icon">🎯</span>Closing Soon</div>
-      <div class="sb-action" onclick="quickAsk('Show me the agent leaderboard and performance')"><span class="sb-icon">🏆</span>Agent Leaderboard</div>
-      <div class="sb-action" onclick="quickAsk('Where are leads coming from and what converts best?')"><span class="sb-icon">📈</span>Lead Sources</div>
-      <div class="sb-action" onclick="quickAsk('Which agents are using the dashboards?')"><span class="sb-icon">📱</span>Dashboard Adoption</div>
-      <div class="sb-action" onclick="loadEmailIntel()"><span class="sb-icon">📧</span>Email Intel</div>
+      <div class="sb-action" role="button" tabindex="0" onclick="quickAsk('Give me a full business snapshot')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();quickAsk('Give me a full business snapshot')}"><span class="sb-icon" aria-hidden="true">📊</span>Business Snapshot</div>
+      <div class="sb-action" role="button" tabindex="0" onclick="quickAsk('Which deals are stale and need follow-up?')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();quickAsk('Which deals are stale and need follow-up?')}"><span class="sb-icon" aria-hidden="true">⚠️</span>Stale Deals</div>
+      <div class="sb-action" role="button" tabindex="0" onclick="quickAsk('What deals are closing soon?')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();quickAsk('What deals are closing soon?')}"><span class="sb-icon" aria-hidden="true">🎯</span>Closing Soon</div>
+      <div class="sb-action" role="button" tabindex="0" onclick="quickAsk('Show me the agent leaderboard and performance')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();quickAsk('Show me the agent leaderboard and performance')}"><span class="sb-icon" aria-hidden="true">🏆</span>Agent Leaderboard</div>
+      <div class="sb-action" role="button" tabindex="0" onclick="quickAsk('Where are leads coming from and what converts best?')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();quickAsk('Where are leads coming from and what converts best?')}"><span class="sb-icon" aria-hidden="true">📈</span>Lead Sources</div>
+      <div class="sb-action" role="button" tabindex="0" onclick="quickAsk('Which agents are using the dashboards?')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();quickAsk('Which agents are using the dashboards?')}"><span class="sb-icon" aria-hidden="true">📱</span>Dashboard Adoption</div>
+      <div class="sb-action" role="button" tabindex="0" onclick="loadEmailIntel()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();loadEmailIntel()}"><span class="sb-icon" aria-hidden="true">📧</span>Email Intel</div>
 
       <div class="sb-divider"></div>
       <div class="sb-sec">Predictive</div>
-      <div class="sb-action" onclick="quickAsk('Give me predictive analytics — revenue forecast, pipeline gaps, and agent trajectories for the next 90 days')"><span class="sb-icon">🔮</span>Revenue Forecast</div>
-      <div class="sb-action" onclick="quickAsk('Which agents are at risk of missing their annual targets? Give me trajectory projections.')"><span class="sb-icon">⚡</span>Agent Trajectories</div>
+      <div class="sb-action" role="button" tabindex="0" onclick="quickAsk('Give me predictive analytics — revenue forecast, pipeline gaps, and agent trajectories for the next 90 days')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();quickAsk('Give me predictive analytics — revenue forecast, pipeline gaps, and agent trajectories for the next 90 days')}"><span class="sb-icon" aria-hidden="true">🔮</span>Revenue Forecast</div>
+      <div class="sb-action" role="button" tabindex="0" onclick="quickAsk('Which agents are at risk of missing their annual targets? Give me trajectory projections.')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();quickAsk('Which agents are at risk of missing their annual targets? Give me trajectory projections.')}"><span class="sb-icon" aria-hidden="true">⚡</span>Agent Trajectories</div>
 
       <div class="sb-divider"></div>
       <div class="sb-sec">Visualize</div>
-      <div class="sb-action" onclick="quickAsk('Show agent performance as a bar chart')"><span class="sb-icon">📉</span>Agent Chart</div>
-      <div class="sb-action" onclick="quickAsk('Pie chart of lead sources')"><span class="sb-icon">🥧</span>Lead Source Chart</div>
-      <div class="sb-action" onclick="quickAsk('Show pipeline by stage as a chart')"><span class="sb-icon">📊</span>Pipeline Chart</div>
+      <div class="sb-action" role="button" tabindex="0" onclick="quickAsk('Show agent performance as a bar chart')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();quickAsk('Show agent performance as a bar chart')}"><span class="sb-icon" aria-hidden="true">📉</span>Agent Chart</div>
+      <div class="sb-action" role="button" tabindex="0" onclick="quickAsk('Pie chart of lead sources')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();quickAsk('Pie chart of lead sources')}"><span class="sb-icon" aria-hidden="true">🥧</span>Lead Source Chart</div>
+      <div class="sb-action" role="button" tabindex="0" onclick="quickAsk('Show pipeline by stage as a chart')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();quickAsk('Show pipeline by stage as a chart')}"><span class="sb-icon" aria-hidden="true">📊</span>Pipeline Chart</div>
 
       <!-- ─── PERFORMANCE GAUGES (22a/22b/22e) ─── -->
       <div class="sb-divider"></div>
@@ -175,7 +191,7 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);height:52px;
       <div class="gauge-wrap">
         <!-- Main GCI Gauge -->
         <div class="gauge-main-block">
-          <canvas id="gauge-gci" class="gauge-canvas" style="height:96px"></canvas>
+          <canvas id="gauge-gci" class="gauge-canvas" style="height:96px" role="img" aria-label="GCI performance gauge — loading"></canvas>
           <div id="gauge-gci-badge" class="gauge-zone-badge grn">LOADING</div>
           <div class="gauge-sub-vals" id="gauge-gci-vals">—</div>
         </div>
@@ -183,23 +199,23 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);height:52px;
         <!-- Two mini gauges -->
         <div class="gauge-mini-row">
           <div class="gauge-mini-block">
-            <canvas id="gauge-pipeline" class="gauge-mini-canvas" style="height:60px"></canvas>
+            <canvas id="gauge-pipeline" class="gauge-mini-canvas" style="height:60px" role="img" aria-label="Active pipeline deals gauge — loading"></canvas>
             <div class="gauge-mini-val" id="gauge-pipeline-val" style="color:var(--mut)">—</div>
             <div class="gauge-mini-lbl">Pipeline</div>
           </div>
           <div class="gauge-mini-block">
-            <canvas id="gauge-closing" class="gauge-mini-canvas" style="height:60px"></canvas>
+            <canvas id="gauge-closing" class="gauge-mini-canvas" style="height:60px" role="img" aria-label="Deals closing soon gauge — loading"></canvas>
             <div class="gauge-mini-val" id="gauge-closing-val" style="color:var(--mut)">—</div>
             <div class="gauge-mini-lbl">Closing</div>
           </div>
         </div>
 
         <!-- Zone legend -->
-        <div class="zone-legend" style="margin-top:8px">
-          <div class="zone-pip"><div class="zone-dot" style="background:#ef4444"></div>Needs</div>
-          <div class="zone-pip"><div class="zone-dot" style="background:#f59e0b"></div>On Track</div>
-          <div class="zone-pip"><div class="zone-dot" style="background:#10b981"></div>Exceed</div>
-          <div class="zone-pip"><div class="zone-dot" style="background:#38bdf8"></div>Elite</div>
+        <div class="zone-legend" style="margin-top:8px" aria-label="Performance zone key">
+          <div class="zone-pip"><div class="zone-dot" style="background:#ef4444" aria-hidden="true"></div>0–70%</div>
+          <div class="zone-pip"><div class="zone-dot" style="background:#f59e0b" aria-hidden="true"></div>70–100%</div>
+          <div class="zone-pip"><div class="zone-dot" style="background:#10b981" aria-hidden="true"></div>100–130%</div>
+          <div class="zone-pip"><div class="zone-dot" style="background:#38bdf8" aria-hidden="true"></div>130%+</div>
         </div>
       </div>
 
@@ -228,14 +244,14 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);height:52px;
         <div class="file-preview">
           <span class="sb-icon">📎</span>
           <span class="fp-name" id="fp-name">file.jpg</span>
-          <span class="fp-rm" onclick="clearFile()">✕</span>
+          <button class="fp-rm" onclick="clearFile()" aria-label="Remove attached file" style="background:none;border:none;cursor:pointer;color:var(--red);font-size:14px;padding:4px;min-width:28px;min-height:28px">✕</button>
         </div>
       </div>
 
       <div class="dori-input-row">
         <button class="input-btn" id="mic-btn" onclick="toggleVoice()" title="Voice input">🎤</button>
         <button class="input-btn" onclick="document.getElementById('file-input').click()" title="Attach image or document">📎</button>
-        <input id="dori-input" placeholder="Ask DORI anything — or try voice 🎤 or attach a file 📎" />
+        <textarea id="dori-input" placeholder="Ask DORI anything — or try voice 🎤 or attach a file 📎" rows="1" aria-label="Message DORI"></textarea>
         <button class="send-btn" id="send-btn" onclick="sendDori()">Send</button>
       </div>
     </main>
@@ -407,7 +423,6 @@ function animateGauge(canvas,targetPct,opts,duration){
 }
 
 // ─── KPI / GAUGE DATA BINDING ─────────────────────────────────────────
-let lastAgentData=[];
 const parseNum=s=>parseFloat((s||'0').replace(/[^0-9.]/g,''))||0;
 
 function updateGauges(data){
@@ -447,11 +462,13 @@ function updateGauges(data){
   const closingVal=document.getElementById('gauge-closing-val');
   if(closingVal){closingVal.textContent=closingCount;closingVal.style.color=gaugeColor(closingPct);}
 
+  // --- Gauge aria-label updates ---
+  const gciPct=document.getElementById('gauge-gci');if(gciPct)gciPct.setAttribute('aria-label','GCI gauge: '+(Math.round((parseNum(pipeline.ytd_gci)/((parseNum(pipeline.annual_target)||500000))*100)))+'% of annual target');
+  const plCanv=document.getElementById('gauge-pipeline');if(plCanv)plCanv.setAttribute('aria-label','Pipeline gauge: '+(pipeline.active_deals||0)+' active deals');
+  const clCanv=document.getElementById('gauge-closing');if(clCanv)clCanv.setAttribute('aria-label','Closing gauge: '+((data.closing_soon||{}).count||0)+' deals closing soon');
+
   // --- Agent leaderboard ---
-  if(agents.length>0){
-    lastAgentData=agents;
-    renderAgentBoard(agents);
-  }
+  if(agents.length>0)renderAgentBoard(agents);
 }
 
 // ─── AGENT LEADERBOARD (22c/22d) ─────────────────────────────────────
@@ -462,7 +479,10 @@ function renderAgentBoard(agents){
   const monthsElapsed=now.getMonth()+1+now.getDate()/30;
   const paceTarget=100000;
 
-  const rows=agents.slice(0,7).map((a,i)=>{
+  board.textContent=''; // clear safely (no innerHTML)
+  const fills=[];
+
+  agents.slice(0,7).forEach((a,i)=>{
     const ytd=parseNum(a.ytd_gci);
     const pace=monthsElapsed>0?Math.round(ytd/monthsElapsed*12):0;
     const pct=Math.round(pace/paceTarget*100);
@@ -472,28 +492,32 @@ function renderAgentBoard(agents){
     const arrowColor=pct>=100?'#10b981':pct>=70?'#f59e0b':'#ef4444';
     const parts=(a.agent||'').split(' ');
     const display=parts[0]+(parts[1]?' '+parts[1][0]+'.':'');
-    return`<div class="agent-row">
-<span class="agent-rank">${i+1}</span>
-<span class="agent-name">${display}</span>
-<div class="agent-bar-bg"><div class="agent-bar-fill" style="width:0%;background:${color}" data-target="${pctCapped}"></div></div>
-<span class="agent-pct" style="color:${color}">${pct}%</span>
-<span class="agent-arrow" style="color:${arrowColor}">${arrow}</span>
-</div>`;
-  }).join('');
 
-  board.innerHTML=rows;
+    const row=document.createElement('div');row.className='agent-row';
+    row.setAttribute('aria-label',display+': '+pct+'% of pace target');
+
+    const rank=document.createElement('span');rank.className='agent-rank';rank.textContent=i+1;
+    const name=document.createElement('span');name.className='agent-name';name.textContent=display;
+
+    const barBg=document.createElement('div');barBg.className='agent-bar-bg';
+    const barFill=document.createElement('div');barFill.className='agent-bar-fill';
+    barFill.style.cssText='width:0%;background:'+color;
+    barBg.appendChild(barFill);fills.push({el:barFill,target:pctCapped});
+
+    const pctEl=document.createElement('span');pctEl.className='agent-pct';pctEl.style.color=color;pctEl.textContent=pct+'%';
+    const arrowEl=document.createElement('span');arrowEl.className='agent-arrow';arrowEl.style.color=arrowColor;arrowEl.textContent=arrow;
+    arrowEl.setAttribute('aria-hidden','true');
+
+    row.appendChild(rank);row.appendChild(name);row.appendChild(barBg);row.appendChild(pctEl);row.appendChild(arrowEl);
+    board.appendChild(row);
+  });
 
   // Animate bars
-  setTimeout(()=>{
-    board.querySelectorAll('.agent-bar-fill').forEach(el=>{
-      const t=el.getAttribute('data-target');
-      el.style.width=t+'%';
-    });
-  },100);
+  setTimeout(()=>fills.forEach(f=>{f.el.style.width=f.target+'%';}),100);
 }
 
 // ─── VOICE (21b) ─────────────────────────────────────────────────────
-let recognition=null,voiceActive=false,voiceEnabled=false,chartCounter=0,pendingFile=null;
+let recognition=null,voiceActive=false,voiceEnabled=false,chartCounter=0,pendingFile=null,chartRegistry=new Map();
 function initVoice(){
   const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
   if(!SR)return;
@@ -551,7 +575,7 @@ function addUserMsg(text,file){
   const label=document.createElement('div');label.className='msg-label';label.textContent='YOU';
   wrap.appendChild(label);
   if(file&&file.mimeType.startsWith('image/')){
-    const img=document.createElement('img');img.src=file.dataUrl;img.className='msg-img';wrap.appendChild(img);
+    const img=document.createElement('img');img.src=file.dataUrl;img.className='msg-img';img.alt='Attached image: '+file.name;wrap.appendChild(img);
   }
   const bubble=document.createElement('div');bubble.className='msg-bubble';bubble.textContent=text;
   wrap.appendChild(bubble);
@@ -579,7 +603,11 @@ function addDoriMessage(data){
     const canvas=document.createElement('canvas');canvas.className='chart-canvas';canvas.id='chart-'+Date.now()+'-'+(chartCounter++);cw.appendChild(canvas);
     wrap.appendChild(cw);
     setTimeout(()=>{
-      try{new Chart(canvas,{type:data.chart.type||'bar',data:{labels:data.chart.labels,datasets:data.chart.datasets},options:{responsive:true,maintainAspectRatio:true,plugins:{legend:{labels:{color:'#94a3b8',font:{family:"'DM Mono'",size:11}}},title:{display:false}},scales:data.chart.type==='pie'||data.chart.type==='doughnut'?undefined:{x:{ticks:{color:'#94a3b8',font:{size:10}},grid:{color:'rgba(255,255,255,.05)'}},y:{ticks:{color:'#94a3b8',font:{size:10}},grid:{color:'rgba(255,255,255,.05)'}}}}});}catch(e){}
+      try{
+        if(chartRegistry.has(canvas.id)){chartRegistry.get(canvas.id).destroy();chartRegistry.delete(canvas.id);}
+        const instance=new Chart(canvas,{type:data.chart.type||'bar',data:{labels:data.chart.labels,datasets:data.chart.datasets},options:{responsive:true,maintainAspectRatio:true,plugins:{legend:{labels:{color:'#94a3b8',font:{family:"'DM Mono'",size:11}}},title:{display:false}},scales:data.chart.type==='pie'||data.chart.type==='doughnut'?undefined:{x:{ticks:{color:'#94a3b8',font:{size:10}},grid:{color:'rgba(255,255,255,.05)'}},y:{ticks:{color:'#94a3b8',font:{size:10}},grid:{color:'rgba(255,255,255,.05)'}}}}});
+        chartRegistry.set(canvas.id,instance);
+      }catch(e){}
     },50);
   }
   const sugg=data.suggestions||[];
@@ -627,7 +655,7 @@ async function sendDori(prefill){
   }
   btn.disabled=false;input.focus();
 }
-function quickAsk(q){document.getElementById('dori-input').value=q;sendDori(q);}
+function quickAsk(q){document.getElementById('dori-input').value=q;closeSidebar();sendDori(q);}
 async function loadEmailIntel(){
   const btn=document.getElementById('send-btn');btn.disabled=true;
   addMsg('user','Show me email intelligence');addThinking('reading Gmail...');
@@ -642,12 +670,31 @@ document.getElementById('dori-input').addEventListener('keydown',e=>{if(e.key===
 // ─── GAUGE KPI FETCH ──────────────────────────────────────────────────
 let gaugesReady=false;
 async function loadKPIs(){
+  if(document.visibilityState==='hidden')return; // skip polling when tab is not visible
   try{
     const r=await fetch(INTEL_API+'?type=all&days=7');
     const d=await r.json();
     updateGauges(d);
     gaugesReady=true;
   }catch(e){/* silent */}
+}
+
+// ─── MOBILE SIDEBAR ───────────────────────────────────────────────────
+function toggleSidebar(){
+  const sb=document.getElementById('main-sidebar');
+  const ov=document.getElementById('sidebar-overlay');
+  const btn=document.getElementById('hamburger-btn');
+  const open=sb.classList.toggle('mobile-open');
+  ov.classList.toggle('open',open);
+  btn.setAttribute('aria-expanded',open);
+  btn.setAttribute('aria-label',open?'Close sidebar navigation':'Open sidebar navigation');
+}
+function closeSidebar(){
+  document.getElementById('main-sidebar').classList.remove('mobile-open');
+  document.getElementById('sidebar-overlay').classList.remove('open');
+  const btn=document.getElementById('hamburger-btn');
+  btn.setAttribute('aria-expanded','false');
+  btn.setAttribute('aria-label','Open sidebar navigation');
 }
 
 // ─── INIT ─────────────────────────────────────────────────────────────
