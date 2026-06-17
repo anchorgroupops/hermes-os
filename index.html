@@ -35,22 +35,49 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);height:52px;
 .status-pill{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--mut);font-family:var(--mono)}
 .safety-badge{font-family:var(--mono);font-size:10px;color:var(--grn);background:rgba(5,150,105,.1);border:1px solid rgba(5,150,105,.25);border-radius:4px;padding:2px 8px;letter-spacing:.5px}
 .shell{display:flex;flex:1;overflow:hidden}
-.sidebar{width:210px;min-width:210px;background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow-y:auto}
+
+/* ─── SIDEBAR ────────────────────────────────────────────────── */
+.sidebar{width:218px;min-width:218px;background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow-y:auto;overflow-x:hidden}
 .sb-sec{padding:14px 14px 4px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--mut);font-family:var(--mono)}
 .sb-action{display:flex;align-items:center;gap:9px;padding:8px 14px;cursor:pointer;color:var(--mut);font-size:12px;border-left:2px solid transparent;transition:all .12s;user-select:none}
 .sb-action:hover{color:var(--txt);background:rgba(255,255,255,.03);border-left-color:var(--accent2)}
 .sb-action:active{background:var(--glow)}
 .sb-icon{font-size:13px;width:16px;text-align:center;flex-shrink:0}
 .sb-divider{height:1px;background:var(--border);margin:8px 14px}
-.kpi-block{padding:12px 14px}
-.kpi-row{display:flex;justify-content:space-between;align-items:baseline;padding:5px 0;border-bottom:1px solid var(--border)}
-.kpi-row:last-child{border-bottom:none}
-.kpi-lbl{font-family:var(--mono);font-size:10px;color:var(--mut);text-transform:uppercase;letter-spacing:.5px}
-.kpi-val{font-family:'Sora',sans-serif;font-size:13px;font-weight:700;color:var(--txt)}
-.kpi-val.grn{color:var(--grn)}
-.kpi-val.amb{color:var(--amb)}
-.kpi-val.red{color:var(--red)}
-.health-grade{font-family:var(--mono);font-size:9px;color:var(--mut);margin-left:4px}
+
+/* ─── GAUGE SECTION ──────────────────────────────────────────── */
+.gauge-wrap{padding:6px 11px 10px}
+.gauge-main-block{display:flex;flex-direction:column;align-items:center;margin-bottom:6px}
+.gauge-canvas{display:block;width:100%;image-rendering:pixelated}
+.gauge-zone-badge{font-family:'Sora',sans-serif;font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:1.2px;padding:2px 7px;border-radius:3px;margin-top:3px}
+.gauge-zone-badge.red{color:#ef4444;background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.25)}
+.gauge-zone-badge.amb{color:#f59e0b;background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.25)}
+.gauge-zone-badge.grn{color:#10b981;background:rgba(16,185,129,.12);border:1px solid rgba(16,185,129,.25)}
+.gauge-zone-badge.blu{color:#38bdf8;background:rgba(56,189,248,.12);border:1px solid rgba(56,189,248,.25)}
+.gauge-sub-vals{font-family:var(--mono);font-size:10px;color:var(--mut);text-align:center;margin-top:2px}
+.gauge-mini-row{display:flex;gap:8px;justify-content:space-between;margin-top:6px}
+.gauge-mini-block{flex:1;display:flex;flex-direction:column;align-items:center;background:var(--surf2);border:1px solid var(--border);border-radius:8px;padding:6px 4px 5px}
+.gauge-mini-canvas{display:block;width:100%;image-rendering:pixelated}
+.gauge-mini-val{font-family:'Sora',sans-serif;font-size:13px;font-weight:700;text-align:center;margin-top:2px;line-height:1}
+.gauge-mini-lbl{font-family:var(--mono);font-size:9px;color:var(--mut);text-align:center;text-transform:uppercase;letter-spacing:.5px;margin-top:2px}
+
+/* ─── AGENT LEADERBOARD ──────────────────────────────────────── */
+.agent-board-wrap{padding:0 11px 12px}
+.agent-row{display:flex;align-items:center;gap:5px;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.035)}
+.agent-row:last-child{border-bottom:none}
+.agent-rank{font-family:var(--mono);font-size:9px;color:var(--mut);width:9px;flex-shrink:0;text-align:center}
+.agent-name{font-size:11px;color:var(--txt);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:500}
+.agent-bar-bg{width:42px;height:4px;background:var(--border);border-radius:2px;overflow:hidden;flex-shrink:0}
+.agent-bar-fill{height:100%;border-radius:2px;transition:width .8s cubic-bezier(.25,.46,.45,.94)}
+.agent-pct{font-family:var(--mono);font-size:9px;width:26px;text-align:right;flex-shrink:0;font-weight:500}
+.agent-arrow{font-size:9px;flex-shrink:0;width:11px;text-align:center;font-weight:700}
+
+/* ─── ZONE LEGEND ────────────────────────────────────────────── */
+.zone-legend{display:flex;gap:4px;padding:4px 11px 8px;flex-wrap:wrap}
+.zone-pip{display:flex;align-items:center;gap:3px;font-family:var(--mono);font-size:8.5px;color:var(--mut)}
+.zone-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+
+/* ─── MAIN CHAT AREA ─────────────────────────────────────────── */
 .main{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0}
 .dori-header{background:var(--surface);border-bottom:1px solid var(--border);padding:12px 18px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
 .dori-title{font-family:'Sora',sans-serif;font-weight:700;font-size:14px;display:flex;align-items:center;gap:8px}
@@ -141,14 +168,46 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);height:52px;
       <div class="sb-action" onclick="quickAsk('Pie chart of lead sources')"><span class="sb-icon">🥧</span>Lead Source Chart</div>
       <div class="sb-action" onclick="quickAsk('Show pipeline by stage as a chart')"><span class="sb-icon">📊</span>Pipeline Chart</div>
 
+      <!-- ─── PERFORMANCE GAUGES (22a/22b/22e) ─── -->
       <div class="sb-divider"></div>
-      <div class="sb-sec">Live KPIs</div>
-      <div class="kpi-block">
-        <div class="kpi-row"><span class="kpi-lbl">Active Deals</span><span class="kpi-val" id="kpi-active">—</span></div>
-        <div class="kpi-row"><span class="kpi-lbl">Pipeline</span><span class="kpi-val" id="kpi-pipeline">—</span></div>
-        <div class="kpi-row"><span class="kpi-lbl">YTD GCI</span><span class="kpi-val grn" id="kpi-gci">—</span></div>
-        <div class="kpi-row"><span class="kpi-lbl">Closing Soon</span><span class="kpi-val amb" id="kpi-closing">—</span></div>
-        <div class="kpi-row"><span class="kpi-lbl">Health</span><span class="kpi-val" id="kpi-health">—<span class="health-grade" id="kpi-health-grade"></span></span></div>
+      <div class="sb-sec">Performance</div>
+
+      <div class="gauge-wrap">
+        <!-- Main GCI Gauge -->
+        <div class="gauge-main-block">
+          <canvas id="gauge-gci" class="gauge-canvas" style="height:96px"></canvas>
+          <div id="gauge-gci-badge" class="gauge-zone-badge grn">LOADING</div>
+          <div class="gauge-sub-vals" id="gauge-gci-vals">—</div>
+        </div>
+
+        <!-- Two mini gauges -->
+        <div class="gauge-mini-row">
+          <div class="gauge-mini-block">
+            <canvas id="gauge-pipeline" class="gauge-mini-canvas" style="height:60px"></canvas>
+            <div class="gauge-mini-val" id="gauge-pipeline-val" style="color:var(--mut)">—</div>
+            <div class="gauge-mini-lbl">Pipeline</div>
+          </div>
+          <div class="gauge-mini-block">
+            <canvas id="gauge-closing" class="gauge-mini-canvas" style="height:60px"></canvas>
+            <div class="gauge-mini-val" id="gauge-closing-val" style="color:var(--mut)">—</div>
+            <div class="gauge-mini-lbl">Closing</div>
+          </div>
+        </div>
+
+        <!-- Zone legend -->
+        <div class="zone-legend" style="margin-top:8px">
+          <div class="zone-pip"><div class="zone-dot" style="background:#ef4444"></div>Needs</div>
+          <div class="zone-pip"><div class="zone-dot" style="background:#f59e0b"></div>On Track</div>
+          <div class="zone-pip"><div class="zone-dot" style="background:#10b981"></div>Exceed</div>
+          <div class="zone-pip"><div class="zone-dot" style="background:#38bdf8"></div>Elite</div>
+        </div>
+      </div>
+
+      <!-- ─── AGENT LEADERBOARD (22c/22d) ─── -->
+      <div class="sb-divider"></div>
+      <div class="sb-sec">Top Agents</div>
+      <div class="agent-board-wrap" id="agent-board">
+        <div style="font-size:11px;color:var(--mut);padding:4px 0">Loading...</div>
       </div>
     </aside>
 
@@ -207,388 +266,405 @@ document.getElementById('pw').addEventListener('keydown',e=>{if(e.key==='Enter')
 if(sessionStorage.getItem(K)){document.getElementById('auth').style.display='none';document.getElementById('app').classList.add('on');init();}
 else{document.getElementById('pw').focus();}
 
-// ─── VOICE (21b) ─────────────────────────────────────────────────────
-let recognition=null;
-let voiceActive=false;
-let voiceEnabled=false;
-let chartCounter=0;
-let pendingFile=null;
-
-function initVoice(){
-  const SpeechRec=window.SpeechRecognition||window.webkitSpeechRecognition;
-  if(!SpeechRec){console.warn('Speech recognition not supported');return;}
-  recognition=new SpeechRec();
-  recognition.continuous=false;
-  recognition.interimResults=true;
-  recognition.lang='en-US';
-  recognition.onresult=e=>{
-    const transcript=Array.from(e.results).map(r=>r[0].transcript).join('');
-    document.getElementById('dori-input').value=transcript;
-    if(e.results[0].isFinal){
-      voiceActive=false;
-      document.getElementById('mic-btn').classList.remove('active');
-      document.getElementById('mic-btn').textContent='🎤';
-      sendDori(transcript);
-    }
-  };
-  recognition.onend=()=>{
-    voiceActive=false;
-    document.getElementById('mic-btn').classList.remove('active');
-    document.getElementById('mic-btn').textContent='🎤';
-  };
-  recognition.onerror=e=>{
-    voiceActive=false;
-    document.getElementById('mic-btn').classList.remove('active');
-    document.getElementById('mic-btn').textContent='🎤';
-    if(e.error!=='aborted')addMsg('dori','Voice recognition error: '+e.error+'. Try typing instead.');
-  };
+// ─── GAUGE ENGINE (22a/22b/22e) ──────────────────────────────────────
+function gaugeColor(pct){
+  if(pct<0.7)return'#ef4444';
+  if(pct<1.0)return'#f59e0b';
+  if(pct<1.3)return'#10b981';
+  return'#38bdf8';
+}
+function gaugeZone(pct){
+  if(pct<0.7)return{label:'NEEDS ATTENTION',cls:'red'};
+  if(pct<1.0)return{label:'ON TRACK',cls:'amb'};
+  if(pct<1.3)return{label:'EXCEEDING',cls:'grn'};
+  return{label:'ELITE',cls:'blu'};
 }
 
-function toggleVoice(){
-  if(!recognition){addMsg('dori','Voice not supported in this browser. Try Chrome.');return;}
-  if(voiceActive){
-    recognition.stop();
-    voiceActive=false;
-    document.getElementById('mic-btn').classList.remove('active');
-    document.getElementById('mic-btn').textContent='🎤';
-  }else{
-    recognition.start();
-    voiceActive=true;
-    voiceEnabled=true;
-    document.getElementById('mic-btn').classList.add('active');
-    document.getElementById('mic-btn').textContent='⏹';
-    document.getElementById('dori-input').placeholder='Listening...';
-    setTimeout(()=>document.getElementById('dori-input').placeholder='Ask DORI anything — or try voice 🎤 or attach a file 📎',5000);
+function drawGauge(canvas,pct,opts){
+  opts=opts||{};
+  const dpr=window.devicePixelRatio||1;
+  const W=canvas.parentElement.clientWidth-(opts.miniPad||0)*2||canvas.clientWidth||180;
+  const H=canvas.clientHeight||96;
+  canvas.width=Math.round(W*dpr);
+  canvas.height=Math.round(H*dpr);
+  canvas.style.width=W+'px';
+  canvas.style.height=H+'px';
+  const ctx=canvas.getContext('2d');
+  ctx.scale(dpr,dpr);
+  ctx.clearRect(0,0,W,H);
+
+  const cx=W/2;
+  const cy=H*0.87;
+  const r=Math.min(W*0.44,H*0.78);
+  const lw=r*(opts.mini?0.24:0.21);
+
+  // Normalize: 150% = full arc
+  const maxPct=1.5;
+  const pctCap=Math.max(0,Math.min(pct,maxPct));
+  const pctNorm=pctCap/maxPct;
+  // Arc: left=π(0%), right=0(150%). valueAngle goes from π toward 0 as pct increases.
+  const valueAngle=Math.PI-(pctNorm*Math.PI);
+
+  const color=gaugeColor(pct);
+
+  // 1 — Background track
+  ctx.beginPath();
+  ctx.arc(cx,cy,r,Math.PI,0,false);
+  ctx.strokeStyle='#1a1a35';
+  ctx.lineWidth=lw;
+  ctx.lineCap='butt';
+  ctx.stroke();
+
+  // 2 — Zone tinting (very subtle)
+  const zoneDefs=[
+    {from:0,to:0.7/maxPct,c:'#ef4444'},
+    {from:0.7/maxPct,to:1.0/maxPct,c:'#f59e0b'},
+    {from:1.0/maxPct,to:1.3/maxPct,c:'#10b981'},
+    {from:1.3/maxPct,to:1.0,c:'#38bdf8'}
+  ];
+  zoneDefs.forEach(z=>{
+    const a0=Math.PI-z.from*Math.PI;
+    const a1=Math.PI-z.to*Math.PI;
+    ctx.beginPath();
+    ctx.arc(cx,cy,r,a0,a1,false);
+    ctx.strokeStyle=z.c+'22';
+    ctx.lineWidth=lw;
+    ctx.lineCap='butt';
+    ctx.stroke();
+  });
+
+  // 3 — Zone tick marks
+  if(!opts.mini){
+    [0.7,1.0,1.3].forEach(zone=>{
+      const a=Math.PI-(zone/maxPct)*Math.PI;
+      const i0=cx+( r-lw*0.55)*Math.cos(a);const j0=cy+(r-lw*0.55)*Math.sin(a);
+      const i1=cx+(r+lw*0.15)*Math.cos(a);const j1=cy+(r+lw*0.15)*Math.sin(a);
+      ctx.beginPath();ctx.moveTo(i0,j0);ctx.lineTo(i1,j1);
+      ctx.strokeStyle='rgba(255,255,255,0.2)';ctx.lineWidth=1.5;ctx.stroke();
+    });
+  }
+
+  // 4 — Value arc
+  if(pctCap>0.015){
+    ctx.beginPath();
+    ctx.arc(cx,cy,r,Math.PI,valueAngle,false);
+    ctx.strokeStyle=color;
+    ctx.lineWidth=lw;
+    ctx.lineCap='round';
+    ctx.stroke();
+
+    // Glow at endpoint
+    const gx=cx+r*Math.cos(valueAngle);
+    const gy=cy+r*Math.sin(valueAngle);
+    const grd=ctx.createRadialGradient(gx,gy,0,gx,gy,lw*1.2);
+    grd.addColorStop(0,color+'bb');
+    grd.addColorStop(1,color+'00');
+    ctx.beginPath();ctx.arc(gx,gy,lw*0.9,0,Math.PI*2);
+    ctx.fillStyle=grd;ctx.fill();
+
+    // Solid dot at tip
+    ctx.beginPath();ctx.arc(gx,gy,lw*0.28,0,Math.PI*2);
+    ctx.fillStyle='#fff';ctx.fill();
+  }
+
+  // 5 — Center value text
+  if(opts.showValue!==false){
+    const pctStr=(pct>0?Math.round(pct*100):0)+'%';
+    const fs=Math.round(r*(opts.mini?0.42:0.38));
+    ctx.fillStyle=pct>0?color:'#334155';
+    ctx.font=`800 ${fs}px 'Sora',system-ui,sans-serif`;
+    ctx.textAlign='center';ctx.textBaseline='middle';
+    const ty=opts.mini?cy-r*0.08:cy-r*0.1;
+    ctx.fillText(pctStr,cx,ty);
+  }
+
+  // 6 — Start/end caps (decorative)
+  [[Math.PI,'#16163a'],[0,'#16163a']].forEach(([a,c])=>{
+    const px=cx+r*Math.cos(a);const py=cy+r*Math.sin(a);
+    ctx.beginPath();ctx.arc(px,py,lw*0.28,0,Math.PI*2);
+    ctx.fillStyle=c;ctx.fill();
+  });
+}
+
+// Animate gauge from 0 to target
+function animateGauge(canvas,targetPct,opts,duration){
+  duration=duration||900;
+  const start=performance.now();
+  const ease=t=>t<0.5?2*t*t:1-Math.pow(-2*t+2,2)/2;
+  function frame(now){
+    const t=Math.min((now-start)/duration,1);
+    drawGauge(canvas,targetPct*ease(t),opts);
+    if(t<1)requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+}
+
+// ─── KPI / GAUGE DATA BINDING ─────────────────────────────────────────
+let lastAgentData=[];
+const parseNum=s=>parseFloat((s||'0').replace(/[^0-9.]/g,''))||0;
+
+function updateGauges(data){
+  const pipeline=data.pipeline||{};
+  const closing=data.closing_soon||{};
+  const agents=data.agent_leaderboard||[];
+
+  // --- Main GCI gauge ---
+  const ytd=parseNum(pipeline.ytd_gci);
+  const target=parseNum(pipeline.annual_target)||500000;
+  const gciPct=target>0?ytd/target:0;
+  const gciGauge=document.getElementById('gauge-gci');
+  if(gciGauge)animateGauge(gciGauge,gciPct,{},1000);
+
+  const badge=document.getElementById('gauge-gci-badge');
+  if(badge){
+    const z=gaugeZone(gciPct);
+    badge.textContent=z.label;
+    badge.className='gauge-zone-badge '+z.cls;
+  }
+  const vals=document.getElementById('gauge-gci-vals');
+  if(vals)vals.textContent=(pipeline.ytd_gci||'—')+' · '+(pipeline.annual_target||'$500k')+' goal';
+
+  // --- Pipeline gauge (active deals vs 40 benchmark = 100%) ---
+  const activeDeals=parseInt(pipeline.active_deals)||0;
+  const pipelinePct=activeDeals/40;
+  const pipelineGauge=document.getElementById('gauge-pipeline');
+  if(pipelineGauge)animateGauge(pipelineGauge,pipelinePct,{mini:true,showValue:false},800);
+  const pipeVal=document.getElementById('gauge-pipeline-val');
+  if(pipeVal){pipeVal.textContent=activeDeals;pipeVal.style.color=gaugeColor(pipelinePct);}
+
+  // --- Closing soon gauge (closing count vs 10 benchmark = 100%) ---
+  const closingCount=parseInt(closing.count)||0;
+  const closingPct=closingCount/10;
+  const closingGauge=document.getElementById('gauge-closing');
+  if(closingGauge)animateGauge(closingGauge,closingPct,{mini:true,showValue:false},800);
+  const closingVal=document.getElementById('gauge-closing-val');
+  if(closingVal){closingVal.textContent=closingCount;closingVal.style.color=gaugeColor(closingPct);}
+
+  // --- Agent leaderboard ---
+  if(agents.length>0){
+    lastAgentData=agents;
+    renderAgentBoard(agents);
   }
 }
 
+// ─── AGENT LEADERBOARD (22c/22d) ─────────────────────────────────────
+function renderAgentBoard(agents){
+  const board=document.getElementById('agent-board');
+  if(!board)return;
+  const now=new Date();
+  const monthsElapsed=now.getMonth()+1+now.getDate()/30;
+  const paceTarget=100000;
+
+  const rows=agents.slice(0,7).map((a,i)=>{
+    const ytd=parseNum(a.ytd_gci);
+    const pace=monthsElapsed>0?Math.round(ytd/monthsElapsed*12):0;
+    const pct=Math.round(pace/paceTarget*100);
+    const pctCapped=Math.min(pct,100);
+    const color=gaugeColor(pct/100);
+    const arrow=pct>=100?'↑':pct>=70?'→':'↓';
+    const arrowColor=pct>=100?'#10b981':pct>=70?'#f59e0b':'#ef4444';
+    const parts=(a.agent||'').split(' ');
+    const display=parts[0]+(parts[1]?' '+parts[1][0]+'.':'');
+    return`<div class="agent-row">
+<span class="agent-rank">${i+1}</span>
+<span class="agent-name">${display}</span>
+<div class="agent-bar-bg"><div class="agent-bar-fill" style="width:0%;background:${color}" data-target="${pctCapped}"></div></div>
+<span class="agent-pct" style="color:${color}">${pct}%</span>
+<span class="agent-arrow" style="color:${arrowColor}">${arrow}</span>
+</div>`;
+  }).join('');
+
+  board.innerHTML=rows;
+
+  // Animate bars
+  setTimeout(()=>{
+    board.querySelectorAll('.agent-bar-fill').forEach(el=>{
+      const t=el.getAttribute('data-target');
+      el.style.width=t+'%';
+    });
+  },100);
+}
+
+// ─── VOICE (21b) ─────────────────────────────────────────────────────
+let recognition=null,voiceActive=false,voiceEnabled=false,chartCounter=0,pendingFile=null;
+function initVoice(){
+  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  if(!SR)return;
+  recognition=new SR();
+  recognition.continuous=false;recognition.interimResults=true;recognition.lang='en-US';
+  recognition.onresult=e=>{
+    const t=Array.from(e.results).map(r=>r[0].transcript).join('');
+    document.getElementById('dori-input').value=t;
+    if(e.results[0].isFinal){
+      voiceActive=false;document.getElementById('mic-btn').classList.remove('active');
+      document.getElementById('mic-btn').textContent='🎤';sendDori(t);
+    }
+  };
+  recognition.onend=()=>{voiceActive=false;document.getElementById('mic-btn').classList.remove('active');document.getElementById('mic-btn').textContent='🎤';};
+  recognition.onerror=()=>{voiceActive=false;document.getElementById('mic-btn').classList.remove('active');document.getElementById('mic-btn').textContent='🎤';};
+}
+function toggleVoice(){
+  if(!recognition){addMsg('dori','Voice not supported in this browser. Try Chrome.');return;}
+  if(voiceActive){recognition.stop();voiceActive=false;document.getElementById('mic-btn').classList.remove('active');document.getElementById('mic-btn').textContent='🎤';}
+  else{recognition.start();voiceActive=true;voiceEnabled=true;document.getElementById('mic-btn').classList.add('active');document.getElementById('mic-btn').textContent='⏹';}
+}
 function speakResponse(text){
   if(!voiceEnabled||!window.speechSynthesis)return;
-  // Truncate to first 500 chars for voice
-  const t=text.replace(/[★★☆⚠️]/g,'').replace(/\n/g,' ').substring(0,500);
-  const utt=new SpeechSynthesisUtterance(t);
-  utt.rate=1.05;
-  utt.pitch=1.0;
-  // Prefer a natural-sounding female voice
-  const voices=speechSynthesis.getVoices();
-  const preferred=voices.find(v=>/samantha|karen|zira|microsoft zira|google us english/i.test(v.name));
-  if(preferred)utt.voice=preferred;
-  speechSynthesis.speak(utt);
+  const t=text.replace(/[^\w\s.,!?$%]/g,'').substring(0,500);
+  const u=new SpeechSynthesisUtterance(t);u.rate=1.05;
+  const v=speechSynthesis.getVoices().find(v=>/samantha|karen|zira/i.test(v.name));
+  if(v)u.voice=v;speechSynthesis.speak(u);
 }
 
 // ─── FILE HANDLING (21a/21c) ──────────────────────────────────────────
 function handleFileSelect(input){
-  const file=input.files[0];
-  if(!file)return;
-  const bar=document.getElementById('file-preview-bar');
+  const file=input.files[0];if(!file)return;
   document.getElementById('fp-name').textContent=file.name+' ('+Math.round(file.size/1024)+'KB)';
-  bar.style.display='block';
-
+  document.getElementById('file-preview-bar').style.display='block';
   const reader=new FileReader();
-  reader.onload=e=>{
-    pendingFile={
-      base64:e.target.result.split(',')[1],
-      mimeType:file.type,
-      name:file.name,
-      dataUrl:e.target.result
-    };
-  };
-  reader.readAsDataURL(file);
-  input.value='';
+  reader.onload=e=>{pendingFile={base64:e.target.result.split(',')[1],mimeType:file.type,name:file.name,dataUrl:e.target.result};};
+  reader.readAsDataURL(file);input.value='';
 }
-
-function clearFile(){
-  pendingFile=null;
-  document.getElementById('file-preview-bar').style.display='none';
-}
+function clearFile(){pendingFile=null;document.getElementById('file-preview-bar').style.display='none';}
 
 // ─── MESSAGE RENDERING ────────────────────────────────────────────────
-function fmt(ts){return new Date(ts).toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit',hour12:true});}
-
+function fmt(){return new Date().toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit',hour12:true});}
 function addMsg(role,text){
   const msgs=document.getElementById('dori-messages');
-  const wrap=document.createElement('div');
-  wrap.className='msg '+role;
-  const label=document.createElement('div');
-  label.className='msg-label';
-  label.textContent=role==='user'?'YOU':'DORI';
-  const bubble=document.createElement('div');
-  bubble.className='msg-bubble';
-  bubble.textContent=text;
-  const time=document.createElement('div');
-  time.className='msg-time';
-  time.textContent=fmt(new Date());
-  wrap.appendChild(label);
-  wrap.appendChild(bubble);
-  wrap.appendChild(time);
-  msgs.appendChild(wrap);
-  msgs.scrollTop=msgs.scrollHeight;
-  return bubble;
+  const wrap=document.createElement('div');wrap.className='msg '+role;
+  const label=document.createElement('div');label.className='msg-label';label.textContent=role==='user'?'YOU':'DORI';
+  const bubble=document.createElement('div');bubble.className='msg-bubble';bubble.textContent=text;
+  const time=document.createElement('div');time.className='msg-time';time.textContent=fmt();
+  wrap.appendChild(label);wrap.appendChild(bubble);wrap.appendChild(time);
+  msgs.appendChild(wrap);msgs.scrollTop=msgs.scrollHeight;return bubble;
 }
-
 function addUserMsg(text,file){
   const msgs=document.getElementById('dori-messages');
-  const wrap=document.createElement('div');
-  wrap.className='msg user';
-  const label=document.createElement('div');
-  label.className='msg-label';
-  label.textContent='YOU';
+  const wrap=document.createElement('div');wrap.className='msg user';
+  const label=document.createElement('div');label.className='msg-label';label.textContent='YOU';
+  wrap.appendChild(label);
   if(file&&file.mimeType.startsWith('image/')){
-    const img=document.createElement('img');
-    img.src=file.dataUrl;
-    img.className='msg-img';
-    wrap.appendChild(label);
-    wrap.appendChild(img);
+    const img=document.createElement('img');img.src=file.dataUrl;img.className='msg-img';wrap.appendChild(img);
   }
-  const bubble=document.createElement('div');
-  bubble.className='msg-bubble';
-  bubble.textContent=text;
-  wrap.appendChild(label.cloneNode(true));
-  if(file&&file.mimeType.startsWith('image/')){
-    const img=document.createElement('img');
-    img.src=file.dataUrl;
-    img.className='msg-img';
-    const imgWrap=document.createElement('div');
-    imgWrap.appendChild(img);
-    // rebuild
-    while(wrap.firstChild)wrap.removeChild(wrap.firstChild);
-    wrap.appendChild(label);
-    wrap.appendChild(imgWrap);
-    wrap.appendChild(bubble);
-  }else{
-    while(wrap.firstChild)wrap.removeChild(wrap.firstChild);
-    wrap.appendChild(label);
-    wrap.appendChild(bubble);
-  }
-  const time=document.createElement('div');
-  time.className='msg-time';
-  time.textContent=fmt(new Date());
-  wrap.appendChild(time);
-  msgs.appendChild(wrap);
-  msgs.scrollTop=msgs.scrollHeight;
+  const bubble=document.createElement('div');bubble.className='msg-bubble';bubble.textContent=text;
+  wrap.appendChild(bubble);
+  const time=document.createElement('div');time.className='msg-time';time.textContent=fmt();
+  wrap.appendChild(time);msgs.appendChild(wrap);msgs.scrollTop=msgs.scrollHeight;
 }
-
 function addDoriMessage(data){
   const msgs=document.getElementById('dori-messages');
-  const wrap=document.createElement('div');
-  wrap.className='msg dori';
-  const label=document.createElement('div');
-  label.className='msg-label';
-  label.textContent='DORI';
-  wrap.appendChild(label);
-
+  const wrap=document.createElement('div');wrap.className='msg dori';
+  const label=document.createElement('div');label.className='msg-label';label.textContent='DORI';wrap.appendChild(label);
   const alerts=data.alerts||[];
   if(alerts.length>0){
-    const alertsDiv=document.createElement('div');
-    alertsDiv.className='dori-alerts';
+    const ad=document.createElement('div');ad.className='dori-alerts';
     alerts.forEach(a=>{
       const item=document.createElement('div');
-      const isSuccess=a.startsWith('TARGET')||a.startsWith('ON TRACK');
-      const isUrgent=a.startsWith('CLOSING');
-      item.className='alert-item'+(isSuccess?' success':isUrgent?' urgent':'');
-      item.textContent=(isSuccess?'✅ ':isUrgent?'🔴 ':'⚠️ ')+a;
-      alertsDiv.appendChild(item);
-    });
-    wrap.appendChild(alertsDiv);
+      const ok=a.startsWith('TARGET')||a.startsWith('ON TRACK');const urg=a.startsWith('CLOSING');
+      item.className='alert-item'+(ok?' success':urg?' urgent':'');
+      item.textContent=(ok?'✅ ':urg?'🔴 ':'⚠️ ')+a;ad.appendChild(item);
+    });wrap.appendChild(ad);
   }
-
-  const bubble=document.createElement('div');
-  bubble.className='msg-bubble';
-  bubble.textContent=data.response||'No data returned.';
-  wrap.appendChild(bubble);
-
-  // ─── CHART (21d) ────────────────────────────────────────────────────
+  const bubble=document.createElement('div');bubble.className='msg-bubble';bubble.textContent=data.response||'No data returned.';wrap.appendChild(bubble);
   if(data.chart&&data.chart.labels){
-    const chartWrap=document.createElement('div');
-    chartWrap.className='chart-wrap';
-    const title=document.createElement('div');
-    title.className='chart-title';
-    title.textContent=data.chart.title||'Chart';
-    chartWrap.appendChild(title);
-    const canvas=document.createElement('canvas');
-    canvas.className='chart-canvas';
-    const cid='chart-'+Date.now()+'-'+(chartCounter++);
-    canvas.id=cid;
-    chartWrap.appendChild(canvas);
-    wrap.appendChild(chartWrap);
+    const cw=document.createElement('div');cw.className='chart-wrap';
+    const ct=document.createElement('div');ct.className='chart-title';ct.textContent=data.chart.title||'Chart';cw.appendChild(ct);
+    const canvas=document.createElement('canvas');canvas.className='chart-canvas';canvas.id='chart-'+Date.now()+'-'+(chartCounter++);cw.appendChild(canvas);
+    wrap.appendChild(cw);
     setTimeout(()=>{
-      try{
-        new Chart(canvas,{
-          type:data.chart.type||'bar',
-          data:{labels:data.chart.labels,datasets:data.chart.datasets},
-          options:{
-            responsive:true,
-            maintainAspectRatio:true,
-            plugins:{
-              legend:{labels:{color:'#94a3b8',font:{family:"'DM Mono'",size:11}}},
-              title:{display:false}
-            },
-            scales:data.chart.type==='pie'||data.chart.type==='doughnut'?undefined:{
-              x:{ticks:{color:'#94a3b8',font:{size:10}},grid:{color:'rgba(255,255,255,.05)'}},
-              y:{ticks:{color:'#94a3b8',font:{size:10}},grid:{color:'rgba(255,255,255,.05)'}}
-            }
-          }
-        });
-      }catch(e){console.error('Chart error:',e);}
+      try{new Chart(canvas,{type:data.chart.type||'bar',data:{labels:data.chart.labels,datasets:data.chart.datasets},options:{responsive:true,maintainAspectRatio:true,plugins:{legend:{labels:{color:'#94a3b8',font:{family:"'DM Mono'",size:11}}},title:{display:false}},scales:data.chart.type==='pie'||data.chart.type==='doughnut'?undefined:{x:{ticks:{color:'#94a3b8',font:{size:10}},grid:{color:'rgba(255,255,255,.05)'}},y:{ticks:{color:'#94a3b8',font:{size:10}},grid:{color:'rgba(255,255,255,.05)'}}}}});}catch(e){}
     },50);
   }
-
-  const suggestions=data.suggestions||[];
-  if(suggestions.length>0){
-    const chips=document.createElement('div');
-    chips.className='suggestion-chips';
-    suggestions.forEach(s=>{
-      const chip=document.createElement('button');
-      chip.className='chip';
-      chip.textContent=s;
-      chip.onclick=()=>quickAsk(s);
-      chips.appendChild(chip);
-    });
+  const sugg=data.suggestions||[];
+  if(sugg.length>0){
+    const chips=document.createElement('div');chips.className='suggestion-chips';
+    sugg.forEach(s=>{const chip=document.createElement('button');chip.className='chip';chip.textContent=s;chip.onclick=()=>quickAsk(s);chips.appendChild(chip);});
     wrap.appendChild(chips);
   }
-
-  const time=document.createElement('div');
-  time.className='msg-time';
-  time.textContent=fmt(new Date());
-  wrap.appendChild(time);
-  msgs.appendChild(wrap);
-  msgs.scrollTop=msgs.scrollHeight;
-
-  if(data.health){
-    const h=data.health;
-    const el=document.getElementById('kpi-health');
-    if(el){
-      el.className='kpi-val '+(h.score>=75?'grn':h.score>=50?'amb':'red');
-      el.innerHTML=h.score+'/100<span class="health-grade">'+h.grade+'</span>';
-    }
-  }
-
+  const time=document.createElement('div');time.className='msg-time';time.textContent=fmt();wrap.appendChild(time);
+  msgs.appendChild(wrap);msgs.scrollTop=msgs.scrollHeight;
+  if(data.health){const h=data.health;const el=document.getElementById('gauge-gci-badge');if(el&&!data.chart){}}
   speakResponse(data.response||'');
 }
-
-function addThinking(label_text){
+function addThinking(lbl){
   const msgs=document.getElementById('dori-messages');
-  const wrap=document.createElement('div');
-  wrap.className='msg dori';
-  wrap.id='dori-thinking';
-  const label=document.createElement('div');
-  label.className='msg-label';
-  label.textContent='DORI';
-  const dots=document.createElement('div');
-  dots.className='thinking';
-  dots.innerHTML='<div class="dot"></div><div class="dot"></div><div class="dot"></div>'+(label_text?'<span style="font-size:11px;color:var(--mut);margin-left:6px">'+label_text+'</span>':'');
-  wrap.appendChild(label);
-  wrap.appendChild(dots);
-  msgs.appendChild(wrap);
-  msgs.scrollTop=msgs.scrollHeight;
+  const wrap=document.createElement('div');wrap.className='msg dori';wrap.id='dori-thinking';
+  const label=document.createElement('div');label.className='msg-label';label.textContent='DORI';
+  const dots=document.createElement('div');dots.className='thinking';
+  dots.innerHTML='<div class="dot"></div><div class="dot"></div><div class="dot"></div>'+(lbl?'<span style="font-size:11px;color:var(--mut);margin-left:6px">'+lbl+'</span>':'');
+  wrap.appendChild(label);wrap.appendChild(dots);msgs.appendChild(wrap);msgs.scrollTop=msgs.scrollHeight;
 }
+function removeThinking(){const el=document.getElementById('dori-thinking');if(el)el.remove();}
 
-function removeThinking(){
-  const el=document.getElementById('dori-thinking');
-  if(el)el.remove();
-}
-
-// ─── SEND LOGIC ───────────────────────────────────────────────────────
+// ─── SEND ─────────────────────────────────────────────────────────────
 async function sendDori(prefill){
-  const input=document.getElementById('dori-input');
-  const btn=document.getElementById('send-btn');
-  const msg=(prefill||input.value).trim();
-  const file=pendingFile;
+  const input=document.getElementById('dori-input');const btn=document.getElementById('send-btn');
+  const msg=(prefill||input.value).trim();const file=pendingFile;
   if(!msg&&!file)return;
-  input.value='';
-  btn.disabled=true;
+  input.value='';btn.disabled=true;
   addUserMsg(msg||'Analyze attached file',file);
   if(file)clearFile();
-
   if(file){
-    // Vision/document path
     addThinking('analyzing...');
     try{
-      const r=await fetch(VISION_API,{
-        method:'POST',
-        headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({file_base64:file.base64,mime_type:file.mimeType,context:msg||'Analyze this for real estate business context.'})
-      });
-      const d=await r.json();
-      removeThinking();
+      const r=await fetch(VISION_API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({file_base64:file.base64,mime_type:file.mimeType,context:msg||'Analyze this for real estate business context.'})});
+      const d=await r.json();removeThinking();
       addDoriMessage({response:d.response||d.text||'Analysis complete.',alerts:[],suggestions:['What deals are stale?','Show me agent performance as a chart','Revenue forecast']});
-    }catch(e){
-      removeThinking();
-      addMsg('dori','Vision analysis unavailable. Check n8n connection.');
-    }
+    }catch(e){removeThinking();addMsg('dori','Vision analysis unavailable.');}
   }else{
-    // Standard DORI chat path
     addThinking();
     try{
       const r=await fetch(DORI_API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:msg})});
-      const d=await r.json();
-      removeThinking();
-      addDoriMessage(d);
-    }catch(e){
-      removeThinking();
-      addMsg('dori','Unable to reach data systems. Check n8n connection.');
-    }
+      const d=await r.json();removeThinking();addDoriMessage(d);
+    }catch(e){removeThinking();addMsg('dori','Unable to reach data systems.');}
   }
-  btn.disabled=false;
-  input.focus();
+  btn.disabled=false;input.focus();
 }
-
-function quickAsk(q){
-  document.getElementById('dori-input').value=q;
-  sendDori(q);
-}
-
+function quickAsk(q){document.getElementById('dori-input').value=q;sendDori(q);}
 async function loadEmailIntel(){
-  const btn=document.getElementById('send-btn');
-  btn.disabled=true;
-  addMsg('user','Show me email intelligence');
-  addThinking('reading Gmail...');
+  const btn=document.getElementById('send-btn');btn.disabled=true;
+  addMsg('user','Show me email intelligence');addThinking('reading Gmail...');
   try{
-    const r=await fetch(EMAIL_API);
-    const d=await r.json();
-    removeThinking();
-    addDoriMessage({
-      response:d.response||'No email data available.',
-      alerts:d.alerts||[],
-      suggestions:['What are the most important things I should know?','Which deals are stale?','What deals are closing soon?']
-    });
-  }catch(e){
-    removeThinking();
-    addMsg('dori','Email system unavailable. Check Gmail connection.');
-  }
-  btn.disabled=false;
-  document.getElementById('dori-input').focus();
+    const r=await fetch(EMAIL_API);const d=await r.json();removeThinking();
+    addDoriMessage({response:d.response||'No email data.',alerts:d.alerts||[],suggestions:['What should I know right now?','Which deals are stale?','What closes soon?']});
+  }catch(e){removeThinking();addMsg('dori','Email unavailable.');}
+  btn.disabled=false;document.getElementById('dori-input').focus();
 }
+document.getElementById('dori-input').addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendDori();}});
 
-document.getElementById('dori-input').addEventListener('keydown',e=>{
-  if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendDori();}
-});
-
-// ─── KPIS + INIT ─────────────────────────────────────────────────────
+// ─── GAUGE KPI FETCH ──────────────────────────────────────────────────
+let gaugesReady=false;
 async function loadKPIs(){
   try{
-    const r=await fetch(INTEL_API+'?type=pipeline');
+    const r=await fetch(INTEL_API+'?type=all&days=7');
     const d=await r.json();
-    const p=d.pipeline||{};
-    const c=d.closing_soon||{};
-    document.getElementById('kpi-active').textContent=p.active_deals||'—';
-    document.getElementById('kpi-pipeline').textContent=p.total_pipeline_value||'—';
-    document.getElementById('kpi-gci').textContent=p.ytd_gci||'—';
-    document.getElementById('kpi-closing').textContent=(c.count||0)+' deals';
+    updateGauges(d);
+    gaugesReady=true;
   }catch(e){/* silent */}
 }
 
+// ─── INIT ─────────────────────────────────────────────────────────────
 function init(){
   initVoice();
-  // Pre-load voices for speech synthesis
-  if(window.speechSynthesis){
-    speechSynthesis.getVoices();
-    speechSynthesis.onvoiceschanged=()=>speechSynthesis.getVoices();
-  }
+  if(window.speechSynthesis){speechSynthesis.getVoices();speechSynthesis.onvoiceschanged=()=>speechSynthesis.getVoices();}
+  // Draw placeholder gauges immediately
+  setTimeout(()=>{
+    const gciC=document.getElementById('gauge-gci');const plC=document.getElementById('gauge-pipeline');const clC=document.getElementById('gauge-closing');
+    if(gciC)drawGauge(gciC,0,{});
+    if(plC)drawGauge(plC,0,{mini:true,showValue:false});
+    if(clC)drawGauge(clC,0,{mini:true,showValue:false});
+  },50);
   loadKPIs();
   setInterval(loadKPIs,120000);
   setTimeout(()=>sendDori('What are the most important things I should know right now?'),800);
 }
+
+// Redraw gauges on window resize
+let resizeTimer;
+window.addEventListener('resize',()=>{
+  clearTimeout(resizeTimer);
+  resizeTimer=setTimeout(()=>{if(gaugesReady)loadKPIs();},300);
+});
 </script>
 </body>
 </html>
