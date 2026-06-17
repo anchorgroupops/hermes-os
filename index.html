@@ -119,6 +119,11 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);height:52px;
       <div class="sb-action" onclick="loadEmailIntel()"><span class="sb-icon">📧</span>Email Intel</div>
 
       <div class="sb-divider"></div>
+      <div class="sb-sec">Predictive</div>
+      <div class="sb-action" onclick="quickAsk('Give me predictive analytics — revenue forecast, pipeline gaps, and agent trajectories for the next 90 days')"><span class="sb-icon">🔮</span>Revenue Forecast</div>
+      <div class="sb-action" onclick="quickAsk('Which agents are at risk of missing their annual targets? Give me trajectory projections.')"><span class="sb-icon">⚡</span>Agent Trajectories</div>
+
+      <div class="sb-divider"></div>
       <div class="sb-sec">Live KPIs</div>
       <div class="kpi-block">
         <div class="kpi-row"><span class="kpi-lbl">Active Deals</span><span class="kpi-val" id="kpi-active">—</span></div>
@@ -141,7 +146,7 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);height:52px;
       <div id="dori-messages"></div>
 
       <div class="dori-input-row">
-        <input id="dori-input" placeholder="Ask about pipeline, deals, agents, leads..." />
+        <input id="dori-input" placeholder="Ask about pipeline, deals, agents, leads, or forecasts..." />
         <button class="send-btn" id="send-btn" onclick="sendDori()">Send</button>
       </div>
     </main>
@@ -208,7 +213,6 @@ function addDoriMessage(data){
   label.textContent='DORI';
   wrap.appendChild(label);
 
-  // Alert banners above the response
   const alerts=data.alerts||[];
   if(alerts.length>0){
     const alertsDiv=document.createElement('div');
@@ -224,13 +228,11 @@ function addDoriMessage(data){
     wrap.appendChild(alertsDiv);
   }
 
-  // Main response bubble
   const bubble=document.createElement('div');
   bubble.className='msg-bubble';
   bubble.textContent=data.response||'No data returned.';
   wrap.appendChild(bubble);
 
-  // Suggestion chips below the response
   const suggestions=data.suggestions||[];
   if(suggestions.length>0){
     const chips=document.createElement('div');
@@ -253,11 +255,9 @@ function addDoriMessage(data){
   msgs.appendChild(wrap);
   msgs.scrollTop=msgs.scrollHeight;
 
-  // Update health score in sidebar
   if(data.health){
     const h=data.health;
     const el=document.getElementById('kpi-health');
-    const gel=document.getElementById('kpi-health-grade');
     if(el){
       el.className='kpi-val '+(h.score>=75?'grn':h.score>=50?'amb':'red');
       el.innerHTML=h.score+'/100<span class="health-grade">'+h.grade+'</span>';
@@ -356,7 +356,6 @@ async function loadKPIs(){
 function init(){
   loadKPIs();
   setInterval(loadKPIs,120000);
-  // Auto-fire proactive briefing — DORI speaks first
   setTimeout(()=>sendDori('What are the most important things I should know right now?'),800);
 }
 </script>
