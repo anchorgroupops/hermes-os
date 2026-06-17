@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
 <title>HermesOS · Agentic Control Center</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -11,8 +12,6 @@
 :root{--bg:#060610;--surface:#0d0d1a;--surf2:#121225;--border:#1a1a35;--accent:#6d28d9;--accent2:#7c3aed;--glow:rgba(109,40,217,.18);--teal:#0891b2;--grn:#059669;--amb:#d97706;--red:#dc2626;--txt:#e2e8f0;--mut:#475569;--mono:'DM Mono',monospace}
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'DM Sans',-apple-system,sans-serif;background:var(--bg);color:var(--txt);font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased;min-height:100vh}
-
-/* AUTH */
 #auth{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:9999;transition:opacity .4s}
 #auth.out{opacity:0;pointer-events:none}
 .auth-box{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:44px 40px;width:100%;max-width:360px;text-align:center;box-shadow:0 0 80px var(--glow)}
@@ -24,12 +23,8 @@ body{font-family:'DM Sans',-apple-system,sans-serif;background:var(--bg);color:v
 .auth-btn{margin-top:14px;width:100%;padding:13px;background:var(--accent);color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;font-family:'Sora',sans-serif;transition:background .2s;letter-spacing:.5px}
 .auth-btn:hover{background:var(--accent2)}
 .auth-err{margin-top:10px;color:var(--red);font-size:12px;font-family:var(--mono);min-height:16px}
-
-/* APP */
 #app{display:none;min-height:100vh}
 #app.on{display:flex;flex-direction:column}
-
-/* NAV */
 nav{background:var(--surface);border-bottom:1px solid var(--border);height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 20px;position:sticky;top:0;z-index:100}
 .nav-brand{font-family:'Sora',sans-serif;font-size:16px;font-weight:800;color:var(--txt);letter-spacing:-.3px;display:flex;align-items:center;gap:8px}
 .nav-brand span{color:var(--accent2)}
@@ -41,8 +36,6 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);height:56px;
 .nav-tab{padding:6px 13px;border-radius:7px;color:var(--mut);font-size:13px;font-weight:600;cursor:pointer;transition:all .15s}
 .nav-tab:hover,.nav-tab.on{background:var(--glow);color:var(--txt);border:1px solid var(--border)}
 .nav-tab:not(.on):hover{background:rgba(255,255,255,.04)}
-
-/* SHELL */
 .shell{display:flex;flex:1}
 .sidebar{width:220px;min-width:220px;background:var(--surface);border-right:1px solid var(--border);padding:18px 0;display:flex;flex-direction:column;gap:1px}
 .sb-sec{padding:12px 16px 4px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--mut);font-family:var(--mono)}
@@ -51,14 +44,9 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);height:56px;
 .sb-item.on{color:var(--txt);border-left-color:var(--accent2);background:var(--glow)}
 .sb-icon{font-size:14px;width:18px;text-align:center}
 .sb-badge{margin-left:auto;font-family:var(--mono);font-size:10px;background:var(--accent);color:#fff;border-radius:4px;padding:1px 6px}
-
-/* MAIN */
 .main{flex:1;padding:24px;overflow-y:auto}
 .page-hd{margin-bottom:22px}
 .page-hd h1{font-family:'Sora',sans-serif;font-size:19px;font-weight:800;color:var(--txt);margin-bottom:4px}
-.page-hd p{color:var(--mut);font-size:13px;font-family:var(--mono)}
-
-/* STATS */
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:22px}
 .stat{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:18px}
 .stat-lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--mut);font-family:var(--mono);margin-bottom:8px}
@@ -66,8 +54,6 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);height:56px;
 .stat-sub{font-size:11px;color:var(--grn);font-family:var(--mono)}
 .stat-sub.warn{color:var(--amb)}
 .stat-sub.err{color:var(--red)}
-
-/* AGENT GRID */
 .agents{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:22px}
 .agent-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:18px}
 .agent-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
@@ -75,14 +61,10 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);height:56px;
 .agent-ico{font-size:18px}
 .agent-status{font-family:var(--mono);font-size:10px;padding:3px 8px;border-radius:4px;font-weight:600}
 .as-running{background:rgba(5,150,105,.15);color:var(--grn);border:1px solid rgba(5,150,105,.3)}
-.as-idle{background:rgba(71,85,105,.15);color:var(--mut);border:1px solid var(--border)}
-.as-error{background:rgba(220,38,38,.15);color:var(--red);border:1px solid rgba(220,38,38,.3)}
 .agent-row{display:flex;justify-content:space-between;font-size:12px;padding:5px 0;border-bottom:1px solid var(--border)}
 .agent-row:last-child{border-bottom:none}
 .agent-k{color:var(--mut);font-family:var(--mono)}
 .agent-v{color:var(--txt)}
-
-/* ACTIVITY LOG */
 .log-list{display:flex;flex-direction:column;gap:8px}
 .log-item{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:12px 16px;display:flex;align-items:flex-start;gap:12px}
 .log-type{font-family:var(--mono);font-size:10px;padding:3px 7px;border-radius:4px;white-space:nowrap;margin-top:1px}
@@ -93,22 +75,17 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);height:56px;
 .log-body{flex:1}
 .log-msg{font-size:13px;color:var(--txt);margin-bottom:2px}
 .log-ts{font-family:var(--mono);font-size:10px;color:var(--mut)}
-
-/* KANBAN SECTION */
 .kanban{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
 .kan-col{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px}
 .kan-hd{font-family:var(--mono);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--mut);margin-bottom:12px;display:flex;align-items:center;justify-content:space-between}
 .kan-count{background:var(--surf2);border:1px solid var(--border);color:var(--mut);border-radius:4px;padding:1px 7px;font-size:10px}
 .kan-card{background:var(--bg);border:1px solid var(--border);border-radius:7px;padding:10px 12px;margin-bottom:8px;font-size:12px;color:var(--mut);font-style:italic;text-align:center}
-
-/* MOBILE */
 @media(max-width:900px){.stats{grid-template-columns:repeat(2,1fr)}.agents{grid-template-columns:1fr}}
 @media(max-width:768px){.sidebar{display:none}.main{padding:14px}.agents{grid-template-columns:1fr}.kanban{grid-template-columns:1fr}}
 @media(max-width:480px){.stats{grid-template-columns:1fr 1fr}.nav-tab:not(.on){display:none}}
 </style>
 </head>
 <body>
-
 <div id="auth">
   <div class="auth-box">
     <div class="auth-logo">Hermes<span>OS</span></div>
@@ -118,7 +95,6 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);height:56px;
     <div class="auth-err" id="err"></div>
   </div>
 </div>
-
 <div id="app">
   <nav>
     <div class="nav-brand">Hermes<span>OS</span> <span class="hermes-badge">ALPHA</span></div>
@@ -130,94 +106,74 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);height:56px;
       <div class="status-pill"><span class="pulse"></span>ONLINE</div>
     </div>
   </nav>
-
   <div class="shell">
     <aside class="sidebar">
       <div class="sb-sec">Core</div>
-      <div class="sb-item on"><span class="sb-icon">⚡</span>Dashboard</div>
-      <div class="sb-item"><span class="sb-icon">🤖</span>Agents <span class="sb-badge">3</span></div>
-      <div class="sb-item"><span class="sb-icon">🧠</span>Memory</div>
-      <div class="sb-item"><span class="sb-icon">⚡</span>Skills</div>
-      <div class="sb-item"><span class="sb-icon">📋</span>Kanban</div>
-      <div class="sb-item"><span class="sb-icon">📡</span>Gateway</div>
+      <div class="sb-item on"><span class="sb-icon">&#9889;</span>Dashboard</div>
+      <div class="sb-item"><span class="sb-icon">&#129302;</span>Agents <span class="sb-badge">3</span></div>
+      <div class="sb-item"><span class="sb-icon">&#129504;</span>Memory</div>
+      <div class="sb-item"><span class="sb-icon">&#9889;</span>Skills</div>
+      <div class="sb-item"><span class="sb-icon">&#128203;</span>Kanban</div>
+      <div class="sb-item"><span class="sb-icon">&#128225;</span>Gateway</div>
       <div class="sb-sec" style="margin-top:12px">Automation</div>
-      <div class="sb-item"><span class="sb-icon">🌙</span>Night Shift</div>
-      <div class="sb-item"><span class="sb-icon">🔄</span>Workflows</div>
-      <div class="sb-item"><span class="sb-icon">🔗</span>Integrations</div>
+      <div class="sb-item"><span class="sb-icon">&#127769;</span>Night Shift</div>
+      <div class="sb-item"><span class="sb-icon">&#128260;</span>Workflows</div>
+      <div class="sb-item"><span class="sb-icon">&#128279;</span>Integrations</div>
       <div class="sb-sec" style="margin-top:12px">System</div>
-      <div class="sb-item"><span class="sb-icon">📊</span>Logs</div>
-      <div class="sb-item"><span class="sb-icon">⚙️</span>Config</div>
-      <div class="sb-item"><span class="sb-icon">🔒</span>Security</div>
+      <div class="sb-item"><span class="sb-icon">&#128202;</span>Logs</div>
+      <div class="sb-item"><span class="sb-icon">&#9881;&#65039;</span>Config</div>
+      <div class="sb-item"><span class="sb-icon">&#128274;</span>Security</div>
     </aside>
-
     <main class="main">
       <div class="page-hd">
         <h1>Agentic Control Center</h1>
-        <p class="page-hd" style="color:var(--mut);font-size:13px;font-family:var(--mono)">hermes.joelycannoli.com · Your AI operating system — online and running.</p>
+        <p style="color:var(--mut);font-size:13px;font-family:var(--mono)">hermes.joelycannoli.com &middot; Your AI operating system &mdash; online and running.</p>
       </div>
-
       <div class="stats">
-        <div class="stat"><div class="stat-lbl">Agents Active</div><div class="stat-val" id="st-agents">—</div><div class="stat-sub" id="st-agents-sub">Loading...</div></div>
-        <div class="stat"><div class="stat-lbl">Tasks Today</div><div class="stat-val" id="st-tasks">—</div><div class="stat-sub" id="st-tasks-sub">Loading...</div></div>
-        <div class="stat"><div class="stat-lbl">Success Rate</div><div class="stat-val" id="st-rate">—</div><div class="stat-sub" id="st-rate-sub">Loading...</div></div>
-        <div class="stat"><div class="stat-lbl">Total Workflows</div><div class="stat-val" id="st-total">—</div><div class="stat-sub">n8n automation stack</div></div>
+        <div class="stat"><div class="stat-lbl">Agents Active</div><div class="stat-val" id="st-agents">&mdash;</div><div class="stat-sub" id="st-agents-sub">Loading...</div></div>
+        <div class="stat"><div class="stat-lbl">Tasks Today</div><div class="stat-val" id="st-tasks">&mdash;</div><div class="stat-sub" id="st-tasks-sub">Loading...</div></div>
+        <div class="stat"><div class="stat-lbl">Success Rate</div><div class="stat-val" id="st-rate">&mdash;</div><div class="stat-sub" id="st-rate-sub">Loading...</div></div>
+        <div class="stat"><div class="stat-lbl">Total Workflows</div><div class="stat-val" id="st-total">&mdash;</div><div class="stat-sub">n8n automation stack</div></div>
       </div>
-
-      <div class="section-hd" style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
         <div style="font-family:'Sora',sans-serif;font-weight:700;font-size:15px">Live Agent Status</div>
-        <button onclick="triggerWorkflow()" style="padding:8px 14px;background:var(--accent);color:#fff;border:none;border-radius:7px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Sora',sans-serif" id="trigger-btn">⚡ Trigger Automation</button>
+        <button onclick="triggerWorkflow()" style="padding:8px 14px;background:var(--accent);color:#fff;border:none;border-radius:7px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Sora',sans-serif" id="trigger-btn">&#9889; Trigger Automation</button>
       </div>
       <div class="agents" id="agent-grid" style="margin-bottom:22px">
         <div class="agent-card" style="grid-column:1/-1;text-align:center;color:var(--mut);padding:40px;font-family:var(--mono);font-size:12px">CONNECTING TO AUTOMATION STACK...</div>
       </div>
-
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
         <div style="font-family:'Sora',sans-serif;font-weight:700;font-size:15px">Activity Log</div>
-        <span style="font-family:var(--mono);font-size:11px;color:var(--grn)" id="log-status">● LIVE</span>
+        <span style="font-family:var(--mono);font-size:11px;color:var(--grn)" id="log-status">&#9679; LIVE</span>
       </div>
       <div class="log-list" id="log-list" style="margin-bottom:22px">
         <div class="log-item"><span class="log-type lt-info">INIT</span><div class="log-body"><div class="log-msg">Connecting to n8n automation stack...</div><div class="log-ts">NOW</div></div></div>
       </div>
-
       <div style="font-family:'Sora',sans-serif;font-weight:700;font-size:15px;margin-bottom:12px">Active Workflows</div>
       <div class="kanban">
-        <div class="kan-col">
-          <div class="kan-hd">RUNNING <span class="kan-count" id="kan-running">—</span></div>
-          <div id="kan-running-list"><div class="kan-card">Loading...</div></div>
-        </div>
-        <div class="kan-col">
-          <div class="kan-hd">RECENT <span class="kan-count" id="kan-recent">—</span></div>
-          <div id="kan-recent-list"><div class="kan-card">Loading...</div></div>
-        </div>
-        <div class="kan-col">
-          <div class="kan-hd">DONE TODAY <span class="kan-count" id="kan-done">—</span></div>
-          <div id="kan-done-list"><div class="kan-card">Loading...</div></div>
-        </div>
+        <div class="kan-col"><div class="kan-hd">RUNNING <span class="kan-count" id="kan-running">&mdash;</span></div><div id="kan-running-list"><div class="kan-card">Loading...</div></div></div>
+        <div class="kan-col"><div class="kan-hd">RECENT <span class="kan-count" id="kan-recent">&mdash;</span></div><div id="kan-recent-list"><div class="kan-card">Loading...</div></div></div>
+        <div class="kan-col"><div class="kan-hd">DONE TODAY <span class="kan-count" id="kan-done">&mdash;</span></div><div id="kan-done-list"><div class="kan-card">Loading...</div></div></div>
       </div>
     </main>
   </div>
 </div>
-
 <script>
-const K='hermes_auth';const P='Anchor98';
+const K='hermes_auth';
+const PH='eab3d0dcc85239f31bdd8cfed413f3f14ed7a9299e7f76e64171ba788e332696';
 const API='https://n8n.joelycannoli.com/webhook/anchor-dashboard';
 const TRIGGER='https://n8n.joelycannoli.com/webhook/anchor-trigger';
-
-function login(){const v=document.getElementById('pw').value;if(v===P){sessionStorage.setItem(K,'1');show()}else{const e=document.getElementById('err');e.textContent='ACCESS DENIED';document.getElementById('pw').value='';document.getElementById('pw').focus();setTimeout(()=>e.textContent='',3e3)}}
+async function hashPw(s){const e=new TextEncoder().encode(s);const b=await crypto.subtle.digest('SHA-256',e);return Array.from(new Uint8Array(b)).map(x=>x.toString(16).padStart(2,'0')).join('')}
+async function login(){const v=document.getElementById('pw').value;if(await hashPw(v)===PH){sessionStorage.setItem(K,'1');show()}else{const e=document.getElementById('err');e.textContent='ACCESS DENIED';document.getElementById('pw').value='';document.getElementById('pw').focus();setTimeout(()=>e.textContent='',3e3)}}
 function show(){document.getElementById('auth').classList.add('out');document.getElementById('app').classList.add('on');setTimeout(()=>{document.getElementById('auth').style.display='none';fetchData()},450)}
 document.getElementById('pw').addEventListener('keydown',e=>{if(e.key==='Enter')login()});
 if(sessionStorage.getItem(K)){document.getElementById('auth').style.display='none';document.getElementById('app').classList.add('on');fetchData()}
 else{document.getElementById('pw').focus()}
 document.querySelectorAll('.nav-tab,.sb-item').forEach(el=>el.addEventListener('click',function(){this.closest('nav,.sidebar')?.querySelectorAll('.nav-tab,.sb-item').forEach(i=>i.classList.remove('on'));this.classList.add('on')}));
-
 function fmt(ts){const d=new Date(ts),now=new Date();const diff=Math.round((now-d)/1e3);if(diff<60)return diff+'s ago';if(diff<3600)return Math.floor(diff/60)+'m ago';return Math.floor(diff/3600)+'h ago'}
-
 async function fetchData(){
   try{
-    const r=await fetch(API);
-    const d=await r.json();
-    const a=d.agents,act=d.activity,wfs=d.workflows||[];
-
+    const r=await fetch(API);const d=await r.json();const a=d.agents,act=d.activity,wfs=d.workflows||[];
     document.getElementById('st-agents').textContent=a.active;
     document.getElementById('st-agents-sub').textContent=a.active+' of '+a.total+' active';
     document.getElementById('st-tasks').textContent=act.today;
@@ -227,52 +183,25 @@ async function fetchData(){
     rateEl.textContent=act.successRate>=90?'Excellent':'Watch errors';
     rateEl.className='stat-sub '+(act.successRate>=90?'':'warn');
     document.getElementById('st-total').textContent=a.total;
-    document.getElementById('log-status').textContent='● SYNCED '+fmt(d.generated);
-
-    // Agent grid
+    document.getElementById('log-status').textContent='&#9679; SYNCED '+fmt(d.generated);
     const grid=document.getElementById('agent-grid');
-    grid.innerHTML=wfs.slice(0,4).map(w=>`
-      <div class="agent-card">
-        <div class="agent-hd"><div class="agent-name"><span class="agent-ico">🤖</span>${w.name.replace(/^[✅⚡🤖⚓⚠️🌙🔄▶️]+\s*/u,'')}</div><span class="agent-status as-running">ACTIVE</span></div>
-        <div class="agent-row"><span class="agent-k">status</span><span class="agent-v" style="color:var(--grn)">running</span></div>
-        <div class="agent-row"><span class="agent-k">workflow_id</span><span class="agent-v" style="font-family:var(--mono);font-size:11px">${w.id.slice(0,12)}...</span></div>
-      </div>`).join('') + `
-      <div class="agent-card" style="border-style:dashed;display:flex;align-items:center;justify-content:center;min-height:120px;cursor:pointer" onclick="triggerWorkflow()">
-        <div style="text-align:center;color:var(--mut)"><div style="font-size:24px;margin-bottom:6px">⚡</div><div style="font-size:11px;font-family:var(--mono)">TRIGGER AUTOMATION</div></div>
-      </div>`;
-
-    // Activity log
+    grid.innerHTML=wfs.slice(0,4).map(w=>`<div class="agent-card"><div class="agent-hd"><div class="agent-name"><span class="agent-ico">&#129302;</span>${w.name.replace(/^[^\w\s]+\s*/u,'')}</div><span class="agent-status as-running">ACTIVE</span></div><div class="agent-row"><span class="agent-k">status</span><span class="agent-v" style="color:var(--grn)">running</span></div><div class="agent-row"><span class="agent-k">workflow_id</span><span class="agent-v" style="font-family:var(--mono);font-size:11px">${w.id.slice(0,12)}...</span></div></div>`).join('')+`<div class="agent-card" style="border-style:dashed;display:flex;align-items:center;justify-content:center;min-height:120px;cursor:pointer" onclick="triggerWorkflow()"><div style="text-align:center;color:var(--mut)"><div style="font-size:24px;margin-bottom:6px">&#9889;</div><div style="font-size:11px;font-family:var(--mono)">TRIGGER AUTOMATION</div></div></div>`;
     const log=document.getElementById('log-list');
-    log.innerHTML=act.recent.map(e=>`
-      <div class="log-item">
-        <span class="log-type ${e.status==='success'?'lt-ok':'lt-err'}">${e.status.toUpperCase()}</span>
-        <div class="log-body"><div class="log-msg">Automation run #${e.id} completed</div><div class="log-ts">${fmt(e.time)} · n8n.joelycannoli.com</div></div>
-      </div>`).join('');
-
-    // Kanban
+    log.innerHTML=act.recent.map(e=>`<div class="log-item"><span class="log-type ${e.status==='success'?'lt-ok':'lt-err'}">${e.status.toUpperCase()}</span><div class="log-body"><div class="log-msg">Automation run #${e.id} completed</div><div class="log-ts">${fmt(e.time)} &middot; n8n.joelycannoli.com</div></div></div>`).join('');
     document.getElementById('kan-running').textContent=a.active;
     document.getElementById('kan-recent').textContent=act.recent.length;
     document.getElementById('kan-done').textContent=act.today;
-    document.getElementById('kan-running-list').innerHTML=wfs.slice(0,3).map(w=>`<div class="kan-card" style="text-align:left;color:var(--txt);font-style:normal;font-size:11px">🟢 ${w.name.slice(0,32)}</div>`).join('');
-    document.getElementById('kan-recent-list').innerHTML=act.recent.slice(0,3).map(e=>`<div class="kan-card" style="text-align:left;color:var(--txt);font-style:normal;font-size:11px">${e.status==='success'?'✅':'❌'} Run #${e.id} · ${fmt(e.time)}</div>`).join('');
-    document.getElementById('kan-done-list').innerHTML=`<div class="kan-card" style="text-align:left;color:var(--txt);font-style:normal;font-size:11px">✅ Goal #1 complete — dashboards live</div><div class="kan-card" style="text-align:left;color:var(--txt);font-style:normal;font-size:11px">✅ n8n API wired — ${act.today} runs today</div>`;
-
-  }catch(err){
-    document.getElementById('log-status').textContent='● ERROR';
-    console.error('Dashboard fetch error',err);
-  }
+    document.getElementById('kan-running-list').innerHTML=wfs.slice(0,3).map(w=>`<div class="kan-card" style="text-align:left;color:var(--txt);font-style:normal;font-size:11px">&#128994; ${w.name.slice(0,32)}</div>`).join('');
+    document.getElementById('kan-recent-list').innerHTML=act.recent.slice(0,3).map(e=>`<div class="kan-card" style="text-align:left;color:var(--txt);font-style:normal;font-size:11px">${e.status==='success'?'&#9989;':'&#10060;'} Run #${e.id} &middot; ${fmt(e.time)}</div>`).join('');
+    document.getElementById('kan-done-list').innerHTML=`<div class="kan-card" style="text-align:left;color:var(--txt);font-style:normal;font-size:11px">&#9989; Goal #1 complete &mdash; dashboards live</div><div class="kan-card" style="text-align:left;color:var(--txt);font-style:normal;font-size:11px">&#9989; n8n API wired &mdash; ${act.today} runs today</div>`;
+  }catch(err){document.getElementById('log-status').textContent='&#9679; ERROR';console.error('Dashboard fetch error',err);}
 }
-
 async function triggerWorkflow(){
-  const btn=document.getElementById('trigger-btn');
-  btn.textContent='Triggering...';btn.disabled=true;
-  try{
-    await fetch(TRIGGER,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({source:'hermes-dashboard',ts:new Date().toISOString()})});
-    btn.textContent='✅ Triggered!';
-  }catch(e){btn.textContent='⚡ Trigger Automation';}
-  setTimeout(()=>{btn.textContent='⚡ Trigger Automation';btn.disabled=false},3000);
+  const btn=document.getElementById('trigger-btn');btn.textContent='Triggering...';btn.disabled=true;
+  try{await fetch(TRIGGER,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({source:'hermes-dashboard',ts:new Date().toISOString()})});btn.textContent='&#9989; Triggered!';}
+  catch(e){btn.textContent='&#9889; Trigger Automation';}
+  setTimeout(()=>{btn.textContent='&#9889; Trigger Automation';btn.disabled=false},3000);
 }
-
 setInterval(fetchData,60000);
 </script>
 </body>
