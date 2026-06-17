@@ -8,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js" integrity="sha384-e6nUZLBkQ86NJ6TVVKAeSaK8jWa3NhkYWZFomE39AvDbQWeie9PlQqM3pmYW5d1g" crossorigin="anonymous"></script>
 <style>
 :root{--bg:#060610;--surface:#0d0d1a;--surf2:#121225;--border:#1a1a35;--accent:#6d28d9;--accent2:#7c3aed;--glow:rgba(109,40,217,.18);--teal:#0891b2;--grn:#059669;--amb:#d97706;--red:#dc2626;--txt:#e2e8f0;--mut:#475569;--mono:'DM Mono',monospace}
 *{box-sizing:border-box;margin:0;padding:0}
@@ -56,7 +57,7 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);height:52px;
 .dori-sub{font-family:var(--mono);font-size:10px;color:var(--mut)}
 .readonly-badge{font-family:var(--mono);font-size:10px;color:var(--teal);background:rgba(8,145,178,.1);border:1px solid rgba(8,145,178,.25);border-radius:4px;padding:2px 8px}
 #dori-messages{flex:1;overflow-y:auto;padding:16px 18px;display:flex;flex-direction:column;gap:12px}
-.msg{display:flex;flex-direction:column;max-width:80%}
+.msg{display:flex;flex-direction:column;max-width:82%}
 .msg.user{align-self:flex-end;align-items:flex-end}
 .msg.dori{align-self:flex-start;align-items:flex-start}
 .msg-label{font-family:var(--mono);font-size:10px;color:var(--mut);margin-bottom:4px;letter-spacing:.5px}
@@ -64,12 +65,20 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);height:52px;
 .msg.user .msg-bubble{background:var(--accent);color:#fff;border-bottom-right-radius:3px}
 .msg.dori .msg-bubble{background:var(--surf2);border:1px solid var(--border);color:var(--txt);border-bottom-left-radius:3px}
 .msg-time{font-family:var(--mono);font-size:10px;color:var(--mut);margin-top:4px}
+.msg-img{max-width:240px;border-radius:8px;margin-bottom:6px;border:1px solid var(--border)}
 .thinking{display:flex;align-items:center;gap:5px;padding:11px 14px;background:var(--surf2);border:1px solid var(--border);border-radius:10px;border-bottom-left-radius:3px}
 .dot{width:6px;height:6px;border-radius:50%;background:var(--accent2);animation:bounce .9s infinite}
 .dot:nth-child(2){animation-delay:.15s}
 .dot:nth-child(3){animation-delay:.3s}
 @keyframes bounce{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-6px)}}
-.dori-input-row{border-top:1px solid var(--border);padding:13px 18px;display:flex;gap:10px;flex-shrink:0;background:var(--surface)}
+.chart-wrap{background:var(--surf2);border:1px solid var(--border);border-radius:10px;padding:14px;margin-top:8px;max-width:500px}
+.chart-title{font-family:'Sora',sans-serif;font-size:12px;font-weight:700;color:var(--mut);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px}
+.chart-canvas{max-height:240px}
+.dori-input-row{border-top:1px solid var(--border);padding:10px 14px;display:flex;gap:8px;align-items:center;flex-shrink:0;background:var(--surface)}
+.input-btn{width:34px;height:34px;border-radius:8px;border:1.5px solid var(--border);background:transparent;color:var(--mut);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:15px;transition:all .12s;flex-shrink:0}
+.input-btn:hover{border-color:var(--accent2);color:var(--txt);background:var(--glow)}
+.input-btn.active{border-color:var(--red);color:var(--red);background:rgba(220,38,38,.1);animation:mic-pulse 1s infinite}
+@keyframes mic-pulse{0%,100%{box-shadow:0 0 0 0 rgba(220,38,38,.4)}50%{box-shadow:0 0 0 6px rgba(220,38,38,0)}}
 #dori-input{flex:1;background:var(--bg);border:1.5px solid var(--border);border-radius:8px;padding:10px 14px;color:var(--txt);font-size:13px;font-family:'DM Sans',sans-serif;outline:none;transition:border-color .15s;resize:none}
 #dori-input:focus{border-color:var(--accent2);box-shadow:0 0 0 2px var(--glow)}
 #dori-input::placeholder{color:var(--mut)}
@@ -83,7 +92,10 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);height:52px;
 .suggestion-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
 .chip{padding:5px 12px;border-radius:20px;border:1px solid var(--border);background:var(--surf2);color:var(--mut);font-size:11px;font-family:var(--mono);cursor:pointer;transition:all .12s;letter-spacing:.2px;line-height:1.4}
 .chip:hover{border-color:var(--accent2);color:var(--txt);background:rgba(109,40,217,.12)}
-@media(max-width:768px){.sidebar{display:none}.msg{max-width:92%}}
+.file-preview{display:flex;align-items:center;gap:8px;padding:6px 10px;background:var(--surf2);border:1px solid var(--border);border-radius:6px;margin-bottom:6px;font-size:11px;font-family:var(--mono);color:var(--mut)}
+.file-preview .fp-name{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.file-preview .fp-rm{cursor:pointer;color:var(--red);font-size:14px}
+@media(max-width:768px){.sidebar{display:none}.msg{max-width:94%}}
 </style>
 </head>
 <body>
@@ -124,6 +136,12 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);height:52px;
       <div class="sb-action" onclick="quickAsk('Which agents are at risk of missing their annual targets? Give me trajectory projections.')"><span class="sb-icon">⚡</span>Agent Trajectories</div>
 
       <div class="sb-divider"></div>
+      <div class="sb-sec">Visualize</div>
+      <div class="sb-action" onclick="quickAsk('Show agent performance as a bar chart')"><span class="sb-icon">📉</span>Agent Chart</div>
+      <div class="sb-action" onclick="quickAsk('Pie chart of lead sources')"><span class="sb-icon">🥧</span>Lead Source Chart</div>
+      <div class="sb-action" onclick="quickAsk('Show pipeline by stage as a chart')"><span class="sb-icon">📊</span>Pipeline Chart</div>
+
+      <div class="sb-divider"></div>
       <div class="sb-sec">Live KPIs</div>
       <div class="kpi-block">
         <div class="kpi-row"><span class="kpi-lbl">Active Deals</span><span class="kpi-val" id="kpi-active">—</span></div>
@@ -138,15 +156,27 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);height:52px;
       <div class="dori-header">
         <div>
           <div class="dori-title">DORI <span style="color:var(--mut);font-weight:400;font-size:13px">— Anchor Group Intelligence</span></div>
-          <div class="dori-sub">Reads FUB CRM live · Never sends notifications to agents or customers</div>
+          <div class="dori-sub">Voice · Vision · Charts · Reads FUB live · Never sends to agents or customers</div>
         </div>
         <span class="readonly-badge">READ-ONLY</span>
       </div>
 
       <div id="dori-messages"></div>
 
+      <input type="file" id="file-input" accept="image/*,.pdf,.doc,.docx" style="display:none" onchange="handleFileSelect(this)">
+
+      <div id="file-preview-bar" style="display:none;padding:6px 14px;border-top:1px solid var(--border);background:var(--surface)">
+        <div class="file-preview">
+          <span class="sb-icon">📎</span>
+          <span class="fp-name" id="fp-name">file.jpg</span>
+          <span class="fp-rm" onclick="clearFile()">✕</span>
+        </div>
+      </div>
+
       <div class="dori-input-row">
-        <input id="dori-input" placeholder="Ask about pipeline, deals, agents, leads, or forecasts..." />
+        <button class="input-btn" id="mic-btn" onclick="toggleVoice()" title="Voice input">🎤</button>
+        <button class="input-btn" onclick="document.getElementById('file-input').click()" title="Attach image or document">📎</button>
+        <input id="dori-input" placeholder="Ask DORI anything — or try voice 🎤 or attach a file 📎" />
         <button class="send-btn" id="send-btn" onclick="sendDori()">Send</button>
       </div>
     </main>
@@ -159,28 +189,121 @@ const K='hermes_auth';
 const DORI_API='https://n8n.joelycannoli.com/webhook/dori-chat';
 const INTEL_API='https://n8n.joelycannoli.com/webhook/anchor-intelligence';
 const EMAIL_API='https://n8n.joelycannoli.com/webhook/dori-email';
+const VISION_API='https://n8n.joelycannoli.com/webhook/dori-vision';
 
+// ─── AUTH ─────────────────────────────────────────────────────────────
 async function hashPw(s){const e=new TextEncoder().encode(s);const b=await crypto.subtle.digest('SHA-256',e);return Array.from(new Uint8Array(b)).map(x=>x.toString(16).padStart(2,'0')).join('')}
-
 async function login(){
   const v=document.getElementById('pw').value;
   if(await hashPw(v)===PH){sessionStorage.setItem(K,'1');show();}
   else{const e=document.getElementById('err');e.textContent='ACCESS DENIED';document.getElementById('pw').value='';document.getElementById('pw').focus();setTimeout(()=>e.textContent='',3000);}
 }
-
 function show(){
   document.getElementById('auth').classList.add('out');
   document.getElementById('app').classList.add('on');
   setTimeout(()=>{document.getElementById('auth').style.display='none';init();},450);
 }
-
 document.getElementById('pw').addEventListener('keydown',e=>{if(e.key==='Enter')login();});
 if(sessionStorage.getItem(K)){document.getElementById('auth').style.display='none';document.getElementById('app').classList.add('on');init();}
 else{document.getElementById('pw').focus();}
 
-function fmt(ts){
-  return new Date(ts).toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit',hour12:true});
+// ─── VOICE (21b) ─────────────────────────────────────────────────────
+let recognition=null;
+let voiceActive=false;
+let voiceEnabled=false;
+let chartCounter=0;
+let pendingFile=null;
+
+function initVoice(){
+  const SpeechRec=window.SpeechRecognition||window.webkitSpeechRecognition;
+  if(!SpeechRec){console.warn('Speech recognition not supported');return;}
+  recognition=new SpeechRec();
+  recognition.continuous=false;
+  recognition.interimResults=true;
+  recognition.lang='en-US';
+  recognition.onresult=e=>{
+    const transcript=Array.from(e.results).map(r=>r[0].transcript).join('');
+    document.getElementById('dori-input').value=transcript;
+    if(e.results[0].isFinal){
+      voiceActive=false;
+      document.getElementById('mic-btn').classList.remove('active');
+      document.getElementById('mic-btn').textContent='🎤';
+      sendDori(transcript);
+    }
+  };
+  recognition.onend=()=>{
+    voiceActive=false;
+    document.getElementById('mic-btn').classList.remove('active');
+    document.getElementById('mic-btn').textContent='🎤';
+  };
+  recognition.onerror=e=>{
+    voiceActive=false;
+    document.getElementById('mic-btn').classList.remove('active');
+    document.getElementById('mic-btn').textContent='🎤';
+    if(e.error!=='aborted')addMsg('dori','Voice recognition error: '+e.error+'. Try typing instead.');
+  };
 }
+
+function toggleVoice(){
+  if(!recognition){addMsg('dori','Voice not supported in this browser. Try Chrome.');return;}
+  if(voiceActive){
+    recognition.stop();
+    voiceActive=false;
+    document.getElementById('mic-btn').classList.remove('active');
+    document.getElementById('mic-btn').textContent='🎤';
+  }else{
+    recognition.start();
+    voiceActive=true;
+    voiceEnabled=true;
+    document.getElementById('mic-btn').classList.add('active');
+    document.getElementById('mic-btn').textContent='⏹';
+    document.getElementById('dori-input').placeholder='Listening...';
+    setTimeout(()=>document.getElementById('dori-input').placeholder='Ask DORI anything — or try voice 🎤 or attach a file 📎',5000);
+  }
+}
+
+function speakResponse(text){
+  if(!voiceEnabled||!window.speechSynthesis)return;
+  // Truncate to first 500 chars for voice
+  const t=text.replace(/[★★☆⚠️]/g,'').replace(/\n/g,' ').substring(0,500);
+  const utt=new SpeechSynthesisUtterance(t);
+  utt.rate=1.05;
+  utt.pitch=1.0;
+  // Prefer a natural-sounding female voice
+  const voices=speechSynthesis.getVoices();
+  const preferred=voices.find(v=>/samantha|karen|zira|microsoft zira|google us english/i.test(v.name));
+  if(preferred)utt.voice=preferred;
+  speechSynthesis.speak(utt);
+}
+
+// ─── FILE HANDLING (21a/21c) ──────────────────────────────────────────
+function handleFileSelect(input){
+  const file=input.files[0];
+  if(!file)return;
+  const bar=document.getElementById('file-preview-bar');
+  document.getElementById('fp-name').textContent=file.name+' ('+Math.round(file.size/1024)+'KB)';
+  bar.style.display='block';
+
+  const reader=new FileReader();
+  reader.onload=e=>{
+    pendingFile={
+      base64:e.target.result.split(',')[1],
+      mimeType:file.type,
+      name:file.name,
+      dataUrl:e.target.result
+    };
+  };
+  reader.readAsDataURL(file);
+  input.value='';
+}
+
+function clearFile(){
+  pendingFile=null;
+  document.getElementById('file-preview-bar').style.display='none';
+}
+
+// ─── MESSAGE RENDERING ────────────────────────────────────────────────
+function fmt(ts){return new Date(ts).toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit',hour12:true});}
 
 function addMsg(role,text){
   const msgs=document.getElementById('dori-messages');
@@ -203,11 +326,52 @@ function addMsg(role,text){
   return bubble;
 }
 
+function addUserMsg(text,file){
+  const msgs=document.getElementById('dori-messages');
+  const wrap=document.createElement('div');
+  wrap.className='msg user';
+  const label=document.createElement('div');
+  label.className='msg-label';
+  label.textContent='YOU';
+  if(file&&file.mimeType.startsWith('image/')){
+    const img=document.createElement('img');
+    img.src=file.dataUrl;
+    img.className='msg-img';
+    wrap.appendChild(label);
+    wrap.appendChild(img);
+  }
+  const bubble=document.createElement('div');
+  bubble.className='msg-bubble';
+  bubble.textContent=text;
+  wrap.appendChild(label.cloneNode(true));
+  if(file&&file.mimeType.startsWith('image/')){
+    const img=document.createElement('img');
+    img.src=file.dataUrl;
+    img.className='msg-img';
+    const imgWrap=document.createElement('div');
+    imgWrap.appendChild(img);
+    // rebuild
+    while(wrap.firstChild)wrap.removeChild(wrap.firstChild);
+    wrap.appendChild(label);
+    wrap.appendChild(imgWrap);
+    wrap.appendChild(bubble);
+  }else{
+    while(wrap.firstChild)wrap.removeChild(wrap.firstChild);
+    wrap.appendChild(label);
+    wrap.appendChild(bubble);
+  }
+  const time=document.createElement('div');
+  time.className='msg-time';
+  time.textContent=fmt(new Date());
+  wrap.appendChild(time);
+  msgs.appendChild(wrap);
+  msgs.scrollTop=msgs.scrollHeight;
+}
+
 function addDoriMessage(data){
   const msgs=document.getElementById('dori-messages');
   const wrap=document.createElement('div');
   wrap.className='msg dori';
-
   const label=document.createElement('div');
   label.className='msg-label';
   label.textContent='DORI';
@@ -233,6 +397,42 @@ function addDoriMessage(data){
   bubble.textContent=data.response||'No data returned.';
   wrap.appendChild(bubble);
 
+  // ─── CHART (21d) ────────────────────────────────────────────────────
+  if(data.chart&&data.chart.labels){
+    const chartWrap=document.createElement('div');
+    chartWrap.className='chart-wrap';
+    const title=document.createElement('div');
+    title.className='chart-title';
+    title.textContent=data.chart.title||'Chart';
+    chartWrap.appendChild(title);
+    const canvas=document.createElement('canvas');
+    canvas.className='chart-canvas';
+    const cid='chart-'+Date.now()+'-'+(chartCounter++);
+    canvas.id=cid;
+    chartWrap.appendChild(canvas);
+    wrap.appendChild(chartWrap);
+    setTimeout(()=>{
+      try{
+        new Chart(canvas,{
+          type:data.chart.type||'bar',
+          data:{labels:data.chart.labels,datasets:data.chart.datasets},
+          options:{
+            responsive:true,
+            maintainAspectRatio:true,
+            plugins:{
+              legend:{labels:{color:'#94a3b8',font:{family:"'DM Mono'",size:11}}},
+              title:{display:false}
+            },
+            scales:data.chart.type==='pie'||data.chart.type==='doughnut'?undefined:{
+              x:{ticks:{color:'#94a3b8',font:{size:10}},grid:{color:'rgba(255,255,255,.05)'}},
+              y:{ticks:{color:'#94a3b8',font:{size:10}},grid:{color:'rgba(255,255,255,.05)'}}
+            }
+          }
+        });
+      }catch(e){console.error('Chart error:',e);}
+    },50);
+  }
+
   const suggestions=data.suggestions||[];
   if(suggestions.length>0){
     const chips=document.createElement('div');
@@ -251,7 +451,6 @@ function addDoriMessage(data){
   time.className='msg-time';
   time.textContent=fmt(new Date());
   wrap.appendChild(time);
-
   msgs.appendChild(wrap);
   msgs.scrollTop=msgs.scrollHeight;
 
@@ -263,9 +462,11 @@ function addDoriMessage(data){
       el.innerHTML=h.score+'/100<span class="health-grade">'+h.grade+'</span>';
     }
   }
+
+  speakResponse(data.response||'');
 }
 
-function addThinking(){
+function addThinking(label_text){
   const msgs=document.getElementById('dori-messages');
   const wrap=document.createElement('div');
   wrap.className='msg dori';
@@ -275,7 +476,7 @@ function addThinking(){
   label.textContent='DORI';
   const dots=document.createElement('div');
   dots.className='thinking';
-  dots.innerHTML='<div class="dot"></div><div class="dot"></div><div class="dot"></div>';
+  dots.innerHTML='<div class="dot"></div><div class="dot"></div><div class="dot"></div>'+(label_text?'<span style="font-size:11px;color:var(--mut);margin-left:6px">'+label_text+'</span>':'');
   wrap.appendChild(label);
   wrap.appendChild(dots);
   msgs.appendChild(wrap);
@@ -287,23 +488,46 @@ function removeThinking(){
   if(el)el.remove();
 }
 
+// ─── SEND LOGIC ───────────────────────────────────────────────────────
 async function sendDori(prefill){
   const input=document.getElementById('dori-input');
   const btn=document.getElementById('send-btn');
   const msg=(prefill||input.value).trim();
-  if(!msg)return;
+  const file=pendingFile;
+  if(!msg&&!file)return;
   input.value='';
   btn.disabled=true;
-  addMsg('user',msg);
-  addThinking();
-  try{
-    const r=await fetch(DORI_API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:msg})});
-    const d=await r.json();
-    removeThinking();
-    addDoriMessage(d);
-  }catch(e){
-    removeThinking();
-    addMsg('dori','Unable to reach data systems. Check n8n connection.');
+  addUserMsg(msg||'Analyze attached file',file);
+  if(file)clearFile();
+
+  if(file){
+    // Vision/document path
+    addThinking('analyzing...');
+    try{
+      const r=await fetch(VISION_API,{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({file_base64:file.base64,mime_type:file.mimeType,context:msg||'Analyze this for real estate business context.'})
+      });
+      const d=await r.json();
+      removeThinking();
+      addDoriMessage({response:d.response||d.text||'Analysis complete.',alerts:[],suggestions:['What deals are stale?','Show me agent performance as a chart','Revenue forecast']});
+    }catch(e){
+      removeThinking();
+      addMsg('dori','Vision analysis unavailable. Check n8n connection.');
+    }
+  }else{
+    // Standard DORI chat path
+    addThinking();
+    try{
+      const r=await fetch(DORI_API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:msg})});
+      const d=await r.json();
+      removeThinking();
+      addDoriMessage(d);
+    }catch(e){
+      removeThinking();
+      addMsg('dori','Unable to reach data systems. Check n8n connection.');
+    }
   }
   btn.disabled=false;
   input.focus();
@@ -318,7 +542,7 @@ async function loadEmailIntel(){
   const btn=document.getElementById('send-btn');
   btn.disabled=true;
   addMsg('user','Show me email intelligence');
-  addThinking();
+  addThinking('reading Gmail...');
   try{
     const r=await fetch(EMAIL_API);
     const d=await r.json();
@@ -340,6 +564,7 @@ document.getElementById('dori-input').addEventListener('keydown',e=>{
   if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendDori();}
 });
 
+// ─── KPIS + INIT ─────────────────────────────────────────────────────
 async function loadKPIs(){
   try{
     const r=await fetch(INTEL_API+'?type=pipeline');
@@ -354,6 +579,12 @@ async function loadKPIs(){
 }
 
 function init(){
+  initVoice();
+  // Pre-load voices for speech synthesis
+  if(window.speechSynthesis){
+    speechSynthesis.getVoices();
+    speechSynthesis.onvoiceschanged=()=>speechSynthesis.getVoices();
+  }
   loadKPIs();
   setInterval(loadKPIs,120000);
   setTimeout(()=>sendDori('What are the most important things I should know right now?'),800);
