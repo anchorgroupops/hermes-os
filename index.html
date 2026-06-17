@@ -299,23 +299,24 @@ function drawGauge(canvas,pct,opts){
   const lw=r*(opts.mini?0.24:0.21);
 
   // Normalize: 150% = full arc
+  // Arc sweeps CLOCKWISE from π (9 o'clock, left) through 3π/2 (12 o'clock, top) to 2π (3 o'clock, right)
+  // Correct formula: endAngle = π + pctNorm * π (not minus — that went through the bottom)
   const maxPct=1.5;
   const pctCap=Math.max(0,Math.min(pct,maxPct));
   const pctNorm=pctCap/maxPct;
-  // Arc: left=π(0%), right=0(150%). valueAngle goes from π toward 0 as pct increases.
-  const valueAngle=Math.PI-(pctNorm*Math.PI);
+  const valueAngle=Math.PI+(pctNorm*Math.PI);
 
   const color=gaugeColor(pct);
 
-  // 1 — Background track
+  // 1 — Background track (π → 2π clockwise = over the top)
   ctx.beginPath();
-  ctx.arc(cx,cy,r,Math.PI,0,false);
+  ctx.arc(cx,cy,r,Math.PI,2*Math.PI,false);
   ctx.strokeStyle='#1a1a35';
   ctx.lineWidth=lw;
   ctx.lineCap='butt';
   ctx.stroke();
 
-  // 2 — Zone tinting (very subtle)
+  // 2 — Zone tinting (subtle color wash per tier)
   const zoneDefs=[
     {from:0,to:0.7/maxPct,c:'#ef4444'},
     {from:0.7/maxPct,to:1.0/maxPct,c:'#f59e0b'},
@@ -323,28 +324,28 @@ function drawGauge(canvas,pct,opts){
     {from:1.3/maxPct,to:1.0,c:'#38bdf8'}
   ];
   zoneDefs.forEach(z=>{
-    const a0=Math.PI-z.from*Math.PI;
-    const a1=Math.PI-z.to*Math.PI;
+    const a0=Math.PI+z.from*Math.PI;
+    const a1=Math.PI+z.to*Math.PI;
     ctx.beginPath();
     ctx.arc(cx,cy,r,a0,a1,false);
-    ctx.strokeStyle=z.c+'22';
+    ctx.strokeStyle=z.c+'28';
     ctx.lineWidth=lw;
     ctx.lineCap='butt';
     ctx.stroke();
   });
 
-  // 3 — Zone tick marks
+  // 3 — Zone tick marks at 70%, 100%, 130%
   if(!opts.mini){
     [0.7,1.0,1.3].forEach(zone=>{
-      const a=Math.PI-(zone/maxPct)*Math.PI;
-      const i0=cx+( r-lw*0.55)*Math.cos(a);const j0=cy+(r-lw*0.55)*Math.sin(a);
-      const i1=cx+(r+lw*0.15)*Math.cos(a);const j1=cy+(r+lw*0.15)*Math.sin(a);
+      const a=Math.PI+(zone/maxPct)*Math.PI;
+      const i0=cx+(r-lw*0.6)*Math.cos(a);const j0=cy+(r-lw*0.6)*Math.sin(a);
+      const i1=cx+(r+lw*0.2)*Math.cos(a);const j1=cy+(r+lw*0.2)*Math.sin(a);
       ctx.beginPath();ctx.moveTo(i0,j0);ctx.lineTo(i1,j1);
-      ctx.strokeStyle='rgba(255,255,255,0.2)';ctx.lineWidth=1.5;ctx.stroke();
+      ctx.strokeStyle='rgba(255,255,255,0.25)';ctx.lineWidth=1.5;ctx.stroke();
     });
   }
 
-  // 4 — Value arc
+  // 4 — Value arc (filled portion from left to current value)
   if(pctCap>0.015){
     ctx.beginPath();
     ctx.arc(cx,cy,r,Math.PI,valueAngle,false);
@@ -352,34 +353,40 @@ function drawGauge(canvas,pct,opts){
     ctx.lineWidth=lw;
     ctx.lineCap='round';
     ctx.stroke();
+  }
 
-    // Glow at endpoint
-    const gx=cx+r*Math.cos(valueAngle);
-    const gy=cy+r*Math.sin(valueAngle);
-    const grd=ctx.createRadialGradient(gx,gy,0,gx,gy,lw*1.2);
-    grd.addColorStop(0,color+'bb');
-    grd.addColorStop(1,color+'00');
-    ctx.beginPath();ctx.arc(gx,gy,lw*0.9,0,Math.PI*2);
-    ctx.fillStyle=grd;ctx.fill();
-
-    // Solid dot at tip
-    ctx.beginPath();ctx.arc(gx,gy,lw*0.28,0,Math.PI*2);
+  // 5 — Needle (reference-style: from center pivot to arc, white with drop shadow)
+  if(pctCap>=0){
+    const needleLen=r*(opts.mini?0.78:0.80);
+    const tipX=cx+needleLen*Math.cos(valueAngle);
+    const tipY=cy+needleLen*Math.sin(valueAngle);
+    // Shadow pass
+    ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(tipX,tipY);
+    ctx.strokeStyle='rgba(0,0,0,0.4)';ctx.lineWidth=opts.mini?3:4;ctx.lineCap='round';ctx.stroke();
+    // White needle
+    ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(tipX,tipY);
+    ctx.strokeStyle='rgba(255,255,255,0.95)';ctx.lineWidth=opts.mini?1.5:2.5;ctx.lineCap='round';ctx.stroke();
+    // Center pivot circle
+    const pivotR=opts.mini?lw*0.22:lw*0.28;
+    ctx.beginPath();ctx.arc(cx,cy,pivotR,0,Math.PI*2);
+    ctx.fillStyle=color;ctx.fill();
+    ctx.beginPath();ctx.arc(cx,cy,pivotR*0.5,0,Math.PI*2);
     ctx.fillStyle='#fff';ctx.fill();
   }
 
-  // 5 — Center value text
+  // 6 — Center value text (above pivot, below arc midpoint)
   if(opts.showValue!==false){
     const pctStr=(pct>0?Math.round(pct*100):0)+'%';
-    const fs=Math.round(r*(opts.mini?0.42:0.38));
+    const fs=Math.round(r*(opts.mini?0.40:0.36));
     ctx.fillStyle=pct>0?color:'#334155';
     ctx.font=`800 ${fs}px 'Sora',system-ui,sans-serif`;
     ctx.textAlign='center';ctx.textBaseline='middle';
-    const ty=opts.mini?cy-r*0.08:cy-r*0.1;
+    const ty=opts.mini?cy-r*0.12:cy-r*0.18;
     ctx.fillText(pctStr,cx,ty);
   }
 
-  // 6 — Start/end caps (decorative)
-  [[Math.PI,'#16163a'],[0,'#16163a']].forEach(([a,c])=>{
+  // 7 — Start/end caps
+  [[Math.PI,'#16163a'],[2*Math.PI,'#16163a']].forEach(([a,c])=>{
     const px=cx+r*Math.cos(a);const py=cy+r*Math.sin(a);
     ctx.beginPath();ctx.arc(px,py,lw*0.28,0,Math.PI*2);
     ctx.fillStyle=c;ctx.fill();
