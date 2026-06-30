@@ -1,0 +1,33 @@
+name: CI
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+    branches: ["**"]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check index.html exists and is non-empty
+        run: |
+          test -f index.html && test -s index.html
+          echo "index.html OK ($(wc -c < index.html) bytes)"
+      - name: Verify password hash matches Anchor98
+        run: |
+          EXPECTED="eab3d0dcc85239f31bdd8cfed413f3f14ed7a9299e7f76e64171ba788e332696"
+          ACTUAL=$(echo -n "Anchor98" | sha256sum | awk '{print $1}')
+          grep -q "$EXPECTED" index.html
+          echo "Password hash verified ✓"
+      - name: Check CNAME
+        run: |
+          test -f CNAME
+          grep -q "hermes.joelycannoli.com" CNAME
+          echo "CNAME OK ✓"
+      - name: Check security headers in vercel.json
+        run: |
+          grep -q "X-Frame-Options" vercel.json
+          grep -q "X-Content-Type-Options" vercel.json
+          echo "Security headers present ✓"
