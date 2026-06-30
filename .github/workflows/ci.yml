@@ -24,7 +24,7 @@ jobs:
       - name: Check CNAME
         run: |
           test -f CNAME
-          grep -q "hermes.joelycannoli.com" CNAME
+          grep -q "dori.joelycannoli.com" CNAME
           echo "CNAME OK ✓"
       - name: Check security headers in vercel.json
         run: |
