@@ -7,13 +7,13 @@
 <title>HermesOS · DORI Intelligence</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=DM+Mono:wght@400;500&display=swap&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
 <noscript><link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"></noscript>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js" integrity="sha384-e6nUZLBkQ86NJ6TVVKAeSaK8jWa3NhkYWZFomE39AvDbQWeie9PlQqM3pmYW5d1g" crossorigin="anonymous" defer></script>
 <style>
 :root{--bg:#060610;--surface:#0d0d1a;--surf2:#121225;--border:#1a1a35;--accent:#6d28d9;--accent2:#7c3aed;--glow:rgba(109,40,217,.18);--teal:#0891b2;--grn:#059669;--amb:#d97706;--red:#dc2626;--txt:#e2e8f0;--mut:#7a8fa8;--mono:'DM Mono',monospace}
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:-apple-system,'Segoe UI',sans-serif;background:var(--bg);color:var(--txt);font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased;min-height:100vh;height:100vh;overflow:hidden}
+body{font-family:-apple-system,'Segoe UI',sans-serif;background:var(--bg);color:var(--txt);font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased;min-height:100vh;height:100dvh;overflow:hidden}
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 #auth{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:9999;transition:opacity .4s}
 #auth.out{opacity:0;pointer-events:none}
@@ -26,7 +26,7 @@ body{font-family:-apple-system,'Segoe UI',sans-serif;background:var(--bg);color:
 .auth-btn{margin-top:14px;width:100%;padding:13px;background:var(--accent);color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;font-family:'Sora',sans-serif;transition:background .2s;letter-spacing:.5px}
 .auth-btn:hover{background:var(--accent2)}
 .auth-err{margin-top:10px;color:var(--red);font-size:12px;font-family:var(--mono);min-height:16px}
-#app{display:none;height:100vh;flex-direction:column}
+#app{display:none;height:100dvh;flex-direction:column}
 #app.on{display:flex}
 nav{background:var(--surface);border-bottom:1px solid var(--border);height:52px;display:flex;align-items:center;justify-content:space-between;padding:0 18px;flex-shrink:0}
 .nav-brand{font-family:'Sora',sans-serif;font-size:16px;font-weight:800;color:var(--txt);letter-spacing:-.3px;display:flex;align-items:center;gap:8px}
@@ -236,7 +236,7 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);height:52px;
         <span class="readonly-badge">READ-ONLY</span>
       </div>
 
-      <div id="dori-messages"></div>
+      <div id="dori-messages" role="log" aria-live="polite" aria-relevant="additions" aria-label="Conversation with DORI"></div>
 
       <input type="file" id="file-input" accept="image/*,.pdf,.doc,.docx" style="display:none" onchange="handleFileSelect(this)">
 
@@ -249,8 +249,8 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);height:52px;
       </div>
 
       <div class="dori-input-row">
-        <button class="input-btn" id="mic-btn" onclick="toggleVoice()" title="Voice input">🎤</button>
-        <button class="input-btn" onclick="document.getElementById('file-input').click()" title="Attach image or document">📎</button>
+        <button class="input-btn" id="mic-btn" onclick="toggleVoice()" title="Voice input" aria-label="Voice input" aria-pressed="false">🎤</button>
+        <button class="input-btn" onclick="document.getElementById('file-input').click()" title="Attach image or document" aria-label="Attach image or document">📎</button>
         <textarea id="dori-input" placeholder="Ask DORI anything — or try voice 🎤 or attach a file 📎" rows="1" aria-label="Message DORI"></textarea>
         <button class="send-btn" id="send-btn" onclick="sendDori()">Send</button>
       </div>
@@ -271,7 +271,15 @@ const ROUTER_API='https://n8n.joelycannoli.com/webhook/watchtower-llm-router';
 async function hashPw(s){const e=new TextEncoder().encode(s);const b=await crypto.subtle.digest('SHA-256',e);return Array.from(new Uint8Array(b)).map(x=>x.toString(16).padStart(2,'0')).join('')}
 async function login(){
   const v=document.getElementById('pw').value;
-  if(await hashPw(v)===PH){sessionStorage.setItem(K,'1');show();}
+  if(!(window.crypto&&crypto.subtle)){
+    const e=document.getElementById('err');
+    e.textContent='SECURE CONNECTION REQUIRED';
+    return;
+  }
+  let h;
+  try{h=await hashPw(v);}
+  catch(err){document.getElementById('err').textContent='SECURE CONNECTION REQUIRED';return;}
+  if(h===PH){sessionStorage.setItem(K,'1');show();}
   else{const e=document.getElementById('err');e.textContent='ACCESS DENIED';document.getElementById('pw').value='';document.getElementById('pw').focus();setTimeout(()=>e.textContent='',3000);}
 }
 function show(){
@@ -424,7 +432,20 @@ function animateGauge(canvas,targetPct,opts,duration){
 }
 
 // ─── KPI / GAUGE DATA BINDING ─────────────────────────────────────────
-const parseNum=s=>parseFloat((s||'0').replace(/[^0-9.]/g,''))||0;
+// Accepts a JSON number, or a currency string such as "$1.2M", "412,000",
+// "500k" or "-$5,000". The old version called .replace() on whatever it was
+// given (TypeError on a JSON number) and stripped the sign and the k/M/B
+// suffix, so "$1.2M" parsed as 1.2 and read as 0.24% of a "$500k" target.
+const parseNum=v=>{
+  if(typeof v==='number')return Number.isFinite(v)?v:0;
+  if(v==null)return 0;
+  const raw=String(v).trim();
+  if(!raw)return 0;
+  const sign=/^\s*-|^\s*\(.*\)\s*$/.test(raw)?-1:1;
+  const mult={k:1e3,m:1e6,b:1e9}[(raw.match(/([kmb])\s*$/i)||[])[1]?.toLowerCase()]||1;
+  const n=parseFloat(raw.replace(/[^0-9.]/g,''));
+  return Number.isFinite(n)?sign*n*mult:0;
+};
 
 function updateGauges(data){
   const pipeline=data.pipeline||{};
@@ -477,7 +498,10 @@ function renderAgentBoard(agents){
   const board=document.getElementById('agent-board');
   if(!board)return;
   const now=new Date();
-  const monthsElapsed=now.getMonth()+1+now.getDate()/30;
+  // getMonth() is 0-indexed, so it is already the count of *completed* months.
+  // Adding 1 counted the current month as fully elapsed and then added its
+  // day fraction on top, overstating elapsed time by a full month.
+  const monthsElapsed=Math.max(now.getMonth()+now.getDate()/30,1/30);
   const paceTarget=100000;
 
   board.textContent=''; // clear safely (no innerHTML)
@@ -538,7 +562,7 @@ function initVoice(){
 function toggleVoice(){
   if(!recognition){addMsg('dori','Voice not supported in this browser. Try Chrome.');return;}
   if(voiceActive){recognition.stop();voiceActive=false;document.getElementById('mic-btn').classList.remove('active');document.getElementById('mic-btn').textContent='🎤';}
-  else{recognition.start();voiceActive=true;voiceEnabled=true;document.getElementById('mic-btn').classList.add('active');document.getElementById('mic-btn').textContent='⏹';}
+  else{recognition.start();voiceActive=true;voiceEnabled=true;const mb=document.getElementById('mic-btn');mb.classList.add('active');mb.textContent='⏹';mb.setAttribute('aria-pressed','true');mb.setAttribute('aria-label','Stop voice input');}
 }
 function speakResponse(text){
   if(!voiceEnabled||!window.speechSynthesis)return;
@@ -619,58 +643,73 @@ function addDoriMessage(data){
   }
   const time=document.createElement('div');time.className='msg-time';time.textContent=fmt();wrap.appendChild(time);
   msgs.appendChild(wrap);msgs.scrollTop=msgs.scrollHeight;
-  if(data.health){const h=data.health;const el=document.getElementById('gauge-gci-badge');if(el&&!data.chart){}}
   speakResponse(data.response||'');
 }
 function addThinking(lbl){
   const msgs=document.getElementById('dori-messages');
-  const wrap=document.createElement('div');wrap.className='msg dori';wrap.id='dori-thinking';
+  const wrap=document.createElement('div');wrap.className='msg dori';wrap.id='dori-thinking-'+(++thinkingSeq);
   const label=document.createElement('div');label.className='msg-label';label.textContent='DORI';
   const dots=document.createElement('div');dots.className='thinking';
-  dots.innerHTML='<div class="dot"></div><div class="dot"></div><div class="dot"></div>'+(lbl?'<span style="font-size:11px;color:var(--mut);margin-left:6px">'+lbl+'</span>':'');
+  for(let i=0;i<3;i++){const d=document.createElement('div');d.className='dot';dots.appendChild(d);}
+  if(lbl){const sp=document.createElement('span');sp.style.cssText='font-size:11px;color:var(--mut);margin-left:6px';sp.textContent=lbl;dots.appendChild(sp);}
   wrap.appendChild(label);wrap.appendChild(dots);msgs.appendChild(wrap);msgs.scrollTop=msgs.scrollHeight;
+  return wrap;
 }
-function removeThinking(){const el=document.getElementById('dori-thinking');if(el)el.remove();}
+// Takes the node addThinking() returned, so overlapping sends each remove
+// their own indicator rather than whichever one happens to be first.
+function removeThinking(node){if(node&&node.remove)node.remove();else{const el=document.querySelector('[id^="dori-thinking-"]');if(el)el.remove();}}
 
 // ─── SEND ─────────────────────────────────────────────────────────────
 async function sendDori(prefill){
   const input=document.getElementById('dori-input');const btn=document.getElementById('send-btn');
   const msg=(prefill||input.value).trim();const file=pendingFile;
   if(!msg&&!file)return;
-  input.value='';btn.disabled=true;
+  if(!prefill)input.value=''; // F13: an auto-fired prefill must not wipe what the user is typing
+  btn.disabled=true;
   addUserMsg(msg||'Analyze attached file',file);
   if(file)clearFile();
   if(file){
-    addThinking('analyzing...');
+    const think=addThinking('analyzing...');
+    let vd=null;
     try{
       const r=await fetch(VISION_API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({file_base64:file.base64,mime_type:file.mimeType,context:msg||'Analyze this for real estate business context.'})});
-      const d=await r.json();removeThinking();
-      addDoriMessage({response:d.response||d.text||'Analysis complete.',alerts:[],suggestions:['What deals are stale?','Show me agent performance as a chart','Revenue forecast']});
-    }catch(e){removeThinking();addMsg('dori','Vision analysis unavailable.');}
+      if(!r.ok)throw new Error('dori-vision '+r.status); // F15: a 500 used to render "Analysis complete."
+      vd=await r.json();
+    }catch(e){removeThinking(think);addMsg('dori','Vision analysis unavailable.');}
+    if(vd){removeThinking(think);
+      addDoriMessage({response:vd.response||vd.text||'Analysis complete.',alerts:[],suggestions:['What deals are stale?','Show me agent performance as a chart','Revenue forecast']});}
   }else{
-    addThinking();
+    const think=addThinking();
+    // F14: rendering happens outside the try. Previously a render error on a
+    // perfectly good 200 was caught as a network failure and fired a second,
+    // duplicate request at the router.
+    let d=null;
     try{
       const r=await fetch(DORI_API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:msg})});
       if(!r.ok)throw new Error('dori-chat '+r.status);
-      const d=await r.json();removeThinking();addDoriMessage(d);
+      d=await r.json();
     }catch(e){
       // dori-chat is down — fall back to the Watchtower free-first LLM router (self-hosted Ollama, then free OpenRouter)
       try{
         const r2=await fetch(ROUTER_API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({prompt:msg,source_device:'hermes-web',inject_memory:true,max_tokens:1024})});
-        const d2=await r2.json();removeThinking();
+        if(!r2.ok)throw new Error('router '+r2.status);
+        const d2=await r2.json();removeThinking(think);
         if(d2&&d2.response)addDoriMessage({response:d2.response,alerts:[],suggestions:[],backend:d2.backend});
         else addMsg('dori','Unable to reach data systems.');
-      }catch(e2){removeThinking();addMsg('dori','Unable to reach data systems.');}
+      }catch(e2){removeThinking(think);addMsg('dori','Unable to reach data systems.');}
     }
+    if(d){removeThinking(think);addDoriMessage(d);}
   }
   btn.disabled=false;input.focus();
 }
-function quickAsk(q){document.getElementById('dori-input').value=q;closeSidebar();sendDori(q);}
+function quickAsk(q){closeSidebar();sendDori(q);}
 async function loadEmailIntel(){
   const btn=document.getElementById('send-btn');btn.disabled=true;
   addMsg('user','Show me email intelligence');addThinking('reading Gmail...');
   try{
-    const r=await fetch(EMAIL_API);const d=await r.json();removeThinking();
+    const r=await fetch(EMAIL_API);
+    if(!r.ok)throw new Error('dori-email '+r.status); // F15
+    const d=await r.json();removeThinking();
     addDoriMessage({response:d.response||'No email data.',alerts:d.alerts||[],suggestions:['What should I know right now?','Which deals are stale?','What closes soon?']});
   }catch(e){removeThinking();addMsg('dori','Email unavailable.');}
   btn.disabled=false;document.getElementById('dori-input').focus();
@@ -678,15 +717,44 @@ async function loadEmailIntel(){
 document.getElementById('dori-input').addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendDori();}});
 
 // ─── GAUGE KPI FETCH ──────────────────────────────────────────────────
-let gaugesReady=false;
+let gaugesReady=false;let thinkingSeq=0;
+let lastKPI=null;        // last good payload, so resize can redraw without a fetch
+let kpiFailures=0;
+let kpiTimer=null;
+const KPI_BASE_MS=120000;
+const KPI_MAX_MS=900000;
+
+function setKpiBadge(text){
+  const el=document.getElementById('gauge-gci-badge');
+  if(el)el.textContent=text;
+}
+
 async function loadKPIs(){
-  if(document.visibilityState==='hidden')return; // skip polling when tab is not visible
+  if(document.visibilityState==='hidden'){scheduleKPI();return;}
   try{
     const r=await fetch(INTEL_API+'?type=all&days=7');
+    if(!r.ok)throw new Error('anchor-intelligence '+r.status);
     const d=await r.json();
+    lastKPI=d;
     updateGauges(d);
     gaugesReady=true;
-  }catch(e){/* silent */}
+    kpiFailures=0;
+  }catch(e){
+    // F21: this used to be a bare silent catch, so a dead backend was
+    // indistinguishable from a genuine $0 — and it retried forever at a
+    // fixed 2 minutes with no backoff.
+    kpiFailures++;
+    if(!gaugesReady)setKpiBadge('DATA UNAVAILABLE');
+    console.warn('KPI refresh failed ('+kpiFailures+'):',e.message);
+  }
+  scheduleKPI();
+}
+
+function scheduleKPI(){
+  clearTimeout(kpiTimer);
+  const delay=kpiFailures===0?KPI_BASE_MS
+    :Math.min(KPI_BASE_MS*Math.pow(2,kpiFailures-1),KPI_MAX_MS);
+  kpiTimer=setTimeout(loadKPIs,delay);
 }
 
 // ─── MOBILE SIDEBAR ───────────────────────────────────────────────────
@@ -718,8 +786,7 @@ function init(){
     if(plC)drawGauge(plC,0,{mini:true,showValue:false});
     if(clC)drawGauge(clC,0,{mini:true,showValue:false});
   },50);
-  loadKPIs();
-  setInterval(loadKPIs,120000);
+  loadKPIs(); // reschedules itself with backoff; no fixed setInterval
   setTimeout(()=>sendDori('What are the most important things I should know right now?'),800);
 }
 
@@ -727,7 +794,10 @@ function init(){
 let resizeTimer;
 window.addEventListener('resize',()=>{
   clearTimeout(resizeTimer);
-  resizeTimer=setTimeout(()=>{if(gaugesReady)loadKPIs();},300);
+  // F23: redraw from the cached payload. This used to fire a full API request
+  // on every resize (constant on mobile as the address bar shows/hides), and
+  // being gated on gaugesReady it never redrew at all while the backend was down.
+  resizeTimer=setTimeout(()=>{if(lastKPI)updateGauges(lastKPI);},300);
 });
 </script>
 </body>
