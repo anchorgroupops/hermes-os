@@ -15,6 +15,8 @@ jobs:
         run: |
           test -f index.html && test -s index.html
           echo "index.html OK ($(wc -c < index.html) bytes)"
+      - name: Syntax-check inline JavaScript
+        run: python3 .github/workflows/check_inline_js.py
       - name: Verify an auth gate is present
         run: |
           # Never assert against a plaintext credential here: this repo is public

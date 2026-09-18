@@ -464,7 +464,7 @@ function updateGauges(data){
   if(closingVal){closingVal.textContent=closingCount;closingVal.style.color=gaugeColor(closingPct);}
 
   // --- Gauge aria-label updates ---
-  const gciPct=document.getElementById('gauge-gci');if(gciPct)gciPct.setAttribute('aria-label','GCI gauge: '+(Math.round((parseNum(pipeline.ytd_gci)/((parseNum(pipeline.annual_target)||500000))*100)))+'% of annual target');
+  const gciCanv=document.getElementById('gauge-gci');if(gciCanv)gciCanv.setAttribute('aria-label','GCI gauge: '+(Math.round((parseNum(pipeline.ytd_gci)/((parseNum(pipeline.annual_target)||500000))*100)))+'% of annual target');
   const plCanv=document.getElementById('gauge-pipeline');if(plCanv)plCanv.setAttribute('aria-label','Pipeline gauge: '+(pipeline.active_deals||0)+' active deals');
   const clCanv=document.getElementById('gauge-closing');if(clCanv)clCanv.setAttribute('aria-label','Closing gauge: '+((data.closing_soon||{}).count||0)+' deals closing soon');
 
