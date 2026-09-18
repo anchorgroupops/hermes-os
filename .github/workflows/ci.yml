@@ -42,6 +42,21 @@ jobs:
           done
           test "$FOUND" -eq 0
           echo "Access code not present in plaintext ✓"
+      - name: Browser smoke test
+        # Skipped until DORI_ACCESS_CODE is added as a repository secret.
+        # The page is a single inline <script>: a parse error disables every
+        # control while still serving a 200, which is how the site shipped
+        # completely broken. node --check catches that; this catches the rest.
+        env:
+          DORI_ACCESS_CODE: ${{ secrets.DORI_ACCESS_CODE }}
+        run: |
+          if [ -z "$DORI_ACCESS_CODE" ]; then
+            echo "::warning::DORI_ACCESS_CODE secret not set - skipping browser smoke test"
+            exit 0
+          fi
+          pip install --quiet playwright
+          python -m playwright install --with-deps chromium
+          python tests/smoke.py
       - name: Check CNAME
         run: |
           test -f CNAME
