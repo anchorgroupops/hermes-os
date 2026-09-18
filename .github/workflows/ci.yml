@@ -15,12 +15,48 @@ jobs:
         run: |
           test -f index.html && test -s index.html
           echo "index.html OK ($(wc -c < index.html) bytes)"
-      - name: Verify password hash matches Anchor98
+      - name: Syntax-check inline JavaScript
+        run: python3 .github/workflows/check_inline_js.py
+      - name: Verify an auth gate is present
         run: |
-          EXPECTED="eab3d0dcc85239f31bdd8cfed413f3f14ed7a9299e7f76e64171ba788e332696"
-          ACTUAL=$(echo -n "Anchor98" | sha256sum | awk '{print $1}')
-          grep -q "$EXPECTED" index.html
-          echo "Password hash verified ✓"
+          # Never assert against a plaintext credential here: this repo is public
+          # and CI logs are world-readable. Only check the gate wiring exists.
+          grep -q "crypto.subtle.digest" index.html
+          grep -q 'id="pw"' index.html
+          echo "Auth gate present ✓"
+      - name: Fail if the access code is committed in plaintext
+        run: |
+          # This repo is public, so the check must not restate the credential or
+          # its shape. Instead, hash every short word in tracked text files and
+          # compare against the gate's own stored digest read from index.html.
+          PH=$(grep -oE "[0-9a-f]{64}" index.html | head -1)
+          test -n "$PH" || { echo "::error::no auth digest found in index.html"; exit 1; }
+          FOUND=0
+          for f in $(git ls-files '*.html' '*.yml' '*.yaml' '*.json' '*.md' '*.txt'); do
+            for w in $(grep -ohE "[A-Za-z0-9!@#$%^&*_-]{4,64}" "$f" | sort -u); do
+              if [ "$(printf '%s' "$w" | sha256sum | awk '{print $1}')" = "$PH" ]; then
+                echo "::error file=$f::the access code appears here in plaintext"
+                FOUND=1
+              fi
+            done
+          done
+          test "$FOUND" -eq 0
+          echo "Access code not present in plaintext ✓"
+      - name: Browser smoke test
+        # Skipped until DORI_ACCESS_CODE is added as a repository secret.
+        # The page is a single inline <script>: a parse error disables every
+        # control while still serving a 200, which is how the site shipped
+        # completely broken. node --check catches that; this catches the rest.
+        env:
+          DORI_ACCESS_CODE: ${{ secrets.DORI_ACCESS_CODE }}
+        run: |
+          if [ -z "$DORI_ACCESS_CODE" ]; then
+            echo "::warning::DORI_ACCESS_CODE secret not set - skipping browser smoke test"
+            exit 0
+          fi
+          pip install --quiet playwright
+          python -m playwright install --with-deps chromium
+          python tests/smoke.py
       - name: Check CNAME
         run: |
           test -f CNAME
